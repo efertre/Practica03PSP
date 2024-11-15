@@ -1,7 +1,6 @@
 package model;
 
 import java.time.LocalDate;
-import java.util.Calendar;
 
 /**
  * (Modelo) Desarrolla un interfaz a implementar sobre las clase hijas para los

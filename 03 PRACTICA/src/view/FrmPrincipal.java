@@ -20,7 +20,7 @@ public class FrmPrincipal extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setResizable(false);
-		setLocationRelativeTo(null);
+		setLocationRelativeTo(null);	
 		setTitle("Práctica 03 - Ema y Paula");
 		
 

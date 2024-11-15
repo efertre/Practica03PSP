@@ -2,6 +2,8 @@ package model;
 
 import java.time.LocalDate;
 
+import exceptions.ESaldoNoValido;
+
 
 public class CuentaAhorro extends Cuenta implements FechaCalculable {
 	
@@ -10,7 +12,7 @@ public class CuentaAhorro extends Cuenta implements FechaCalculable {
 	
 
 	public CuentaAhorro(Integer numero, String titular, Double saldo, Double saldoMinimo,
-			LocalDate fechaApertura, Double interesAnual, Double ahorros) {
+			LocalDate fechaApertura, Double interesAnual, Double ahorros) throws ESaldoNoValido {
 		super(numero, titular, saldo, saldoMinimo, fechaApertura);
 
 		setInteresAnual(interesAnual);

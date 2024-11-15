@@ -12,8 +12,6 @@ public class Cuenta {
 	
 	
 	
-	
-	
 	public Cuenta(Integer numero, String titular, Double saldo, Double saldoMinimo, GregorianCalendar fechaApertura) {
 		super();
 		setNumero(numero);
@@ -27,7 +25,8 @@ public class Cuenta {
 		return numero;
 	}
 	public void setNumero(Integer numero) {
-		this.numero = numero;
+		if(numero >= 1 && numero <= 1000)
+			this.numero = numero;
 	}
 	public String getTitular() {
 		return titular;

@@ -1,6 +1,6 @@
 package model;
 
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
 
 public class Cuenta {
 
@@ -8,11 +8,11 @@ public class Cuenta {
 	private transient String titular;
 	private Double saldo;
 	private Double saldoMinimo;
-	private GregorianCalendar fechaApertura;
+	private LocalDate fechaApertura;
 	
 	
 	
-	public Cuenta(Integer numero, String titular, Double saldo, Double saldoMinimo, GregorianCalendar fechaApertura) {
+	public Cuenta(Integer numero, String titular, Double saldo, Double saldoMinimo, LocalDate fechaApertura) {
 		super();
 		setNumero(numero);
 		setTitular(titular);
@@ -46,10 +46,10 @@ public class Cuenta {
 	public void setSaldoMinimo(Double saldoMinimo) {
 		this.saldoMinimo = saldoMinimo;
 	}
-	public GregorianCalendar getFechaApertura() {
+	public LocalDate getFechaApertura() {
 		return fechaApertura;
 	}
-	public void setFechaApertura(GregorianCalendar fechaApertura) {
+	public void setFechaApertura(LocalDate fechaApertura) {
 		this.fechaApertura = fechaApertura;
 	}
 	

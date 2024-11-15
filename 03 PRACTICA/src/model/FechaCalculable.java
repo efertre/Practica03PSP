@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 
 /**
@@ -15,11 +16,11 @@ import java.util.Calendar;
 
 public interface FechaCalculable {
 
-	final int DIA_DEL_MES = Calendar.DAY_OF_MONTH;
-	final int MES = Calendar.MONTH;
-	final int ANYO = Calendar.YEAR;
+	final int DIA_DEL_MES = LocalDate.now().getDayOfMonth();
+	final int MES = LocalDate.now().getMonthValue();
+	final int ANYO = LocalDate.now().getYear();
 	
-	public void cumplirMes();
-	public void cumplirAnyo();
+	public int cumplirMes();
+	public int cumplirAnyo();
 
 }

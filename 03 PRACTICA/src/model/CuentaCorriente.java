@@ -33,31 +33,4 @@ public class CuentaCorriente extends Cuenta implements FechaCalculable {
 		this.tipo = tipo;
 	}
 	
-	
-
-	@Override
-	public int cumplirMes() {
-		
-		
-		int dias = ((FechaCalculable.ANYO - super.getFechaApertura().getYear()) * 365 +
-				(FechaCalculable.MES - super.getFechaApertura().getMonthValue()) * 30 +
-				(FechaCalculable.DIA_DEL_MES - super.getFechaApertura().getDayOfMonth()));
-		
-		
-		return dias / 30;
-	}
-
-
-	@Override
-	public int cumplirAnyo() {
-		int dias = ((FechaCalculable.ANYO - super.getFechaApertura().getYear()) * 365 +
-				(FechaCalculable.MES - super.getFechaApertura().getMonthValue()) * 30 +
-				(FechaCalculable.DIA_DEL_MES - super.getFechaApertura().getDayOfMonth()));
-		
-		
-		return dias / 365;
-	}
-
-
-	
 }

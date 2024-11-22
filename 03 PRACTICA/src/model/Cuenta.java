@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import model.exceptions.ESaldoNoValido;
 
-public class Cuenta {
+public class Cuenta implements FechaCalculable {
 
 	private Integer numero;
 	private transient String titular;
@@ -63,6 +63,27 @@ public class Cuenta {
 
 	public void setFechaApertura(LocalDate fechaApertura) {
 		this.fechaApertura = fechaApertura;
+	}
+
+	@Override
+	public int cumplirMes() {
+
+		int dias = ((FechaCalculable.ANYO - getFechaApertura().getYear()) * 365 +
+				(FechaCalculable.MES - getFechaApertura().getMonthValue()) * 30 +
+				(FechaCalculable.DIA_DEL_MES - getFechaApertura().getDayOfMonth()));
+		
+		
+		return dias / 30;
+	}
+
+	@Override
+	public int cumplirAnyo() {
+		int dias = ((FechaCalculable.ANYO - getFechaApertura().getYear()) * 365 +
+				(FechaCalculable.MES - getFechaApertura().getMonthValue()) * 30 +
+				(FechaCalculable.DIA_DEL_MES - getFechaApertura().getDayOfMonth()));
+		
+		
+		return dias / 365;
 	}
 
 }

@@ -2,7 +2,7 @@ package model;
 
 import java.time.LocalDate;
 
-import exceptions.ESaldoNoValido;
+import model.exceptions.ESaldoNoValido;
 
 public class Cuenta {
 

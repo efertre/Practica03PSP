@@ -1,4 +1,4 @@
-package exceptions;
+package model.exceptions;
 
 public class ESaldoNoValido extends Exception {        
     public ESaldoNoValido() {}

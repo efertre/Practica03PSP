@@ -29,7 +29,7 @@ public class PanelJLista extends JPanel {
         // Configurar el JScrollPane y JList
         jList1.setModel(modeloLista(lista));
         scrollPane.setViewportView(jList1);
-        scrollPane.setBounds(54, 53, 224, 175);
+        scrollPane.setBounds(0, 19, 450, 281);
 
         add(scrollPane); // Añadir JScrollPane al panel
 

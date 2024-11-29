@@ -47,7 +47,7 @@ public class FrmPrincipal extends JFrame {
 		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 464, 380);
 		
 		setResizable(false);
 		setLocationRelativeTo(null);	
@@ -204,6 +204,7 @@ public class FrmPrincipal extends JFrame {
 		
 
 		panPrincipal.add(panJList, BorderLayout.CENTER);
+		panJList.setLayout(new BorderLayout(0, 0));
 		
 		
 

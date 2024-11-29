@@ -1,12 +1,17 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import model.exceptions.ESaldoNoValido;
 
 
-public class CuentaAhorro extends Cuenta implements FechaCalculable {
+public class CuentaAhorro extends Cuenta implements FechaCalculable, Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Double interesAnual;
 	private Double ahorros;
 	
@@ -38,6 +43,13 @@ public class CuentaAhorro extends Cuenta implements FechaCalculable {
 
 	public void setAhorros(Double ahorros) {
 		this.ahorros = ahorros;
+	}
+
+
+	@Override
+	public String toString() {
+		return "CuentaAhorro [interesAnual=" + interesAnual + ", ahorros=" + ahorros + ", toString()="
+				+ super.toString() + "]";
 	}
 
 

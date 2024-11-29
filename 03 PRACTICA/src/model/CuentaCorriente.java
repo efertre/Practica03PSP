@@ -1,11 +1,16 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import model.exceptions.ESaldoNoValido;
 
-public class CuentaCorriente extends Cuenta implements FechaCalculable {
+public class CuentaCorriente extends Cuenta implements FechaCalculable, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Double comisionMantenimiento;
 	private TipoComision tipo;
 	
@@ -32,5 +37,13 @@ public class CuentaCorriente extends Cuenta implements FechaCalculable {
 	public void setTipo(TipoComision tipo) {
 		this.tipo = tipo;
 	}
+
+	@Override
+	public String toString() {
+		return "CuentaCorriente [comisionMantenimiento=" + comisionMantenimiento + ", tipo=" + tipo + ", toString()="
+				+ super.toString() + "]";
+	}
+	
+	
 	
 }

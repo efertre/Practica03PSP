@@ -3,8 +3,7 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.StyledEditorKit.ForegroundAction;
 
 import controller.CtrlCuentas;
 import model.Cuenta;
@@ -29,14 +27,23 @@ public class FrmPrincipal extends JFrame {
 	private JPanel contentPane;
 	
 	private String ruta = "prueba.dat";
+
 	private CtrlCuentas ctrl = new CtrlCuentas(ruta);
 	private List<Cuenta> cuentas = new ArrayList<Cuenta>();
+	
+	private PanelJLista panJList;
+	private JMenu mnOpciones, mnVer, mnInsertar;
+	private JMenuBar mnPrincipal;
 	
 
 	/**
 	 * Crea el frame
 	 */
 	public FrmPrincipal() {
+		
+		
+		
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -46,16 +53,23 @@ public class FrmPrincipal extends JFrame {
 		setTitle("Práctica 03 - Ema y Paula");
 		
 
+		addComponents();
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
 		JMenuBar mnPrincipal = new JMenuBar();
 		contentPane.add(mnPrincipal, BorderLayout.NORTH);
 		
-		JMenu mnOpciones = new JMenu("Opciones");
+		
 		mnPrincipal.add(mnOpciones);
+
 		
 		JMenuItem mntmVaciarLista = new JMenuItem("Vaciar Lista");
+		mntmVaciarLista.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		mnOpciones.add(mntmVaciarLista);
 		mntmVaciarLista.setHorizontalAlignment(SwingConstants.LEFT);
 		
@@ -107,6 +121,23 @@ public class FrmPrincipal extends JFrame {
 		mnPrincipal.add(mnVer);
 		
 		JMenuItem mntmListar = new JMenuItem("Listar todos");
+		mntmListar.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		    	
+		    	
+		        PanelJLista panJList = new PanelJLista(cuentas);
+
+		        
+
+		        // Añadir el nuevo panel
+		        contentPane.add(panJList, BorderLayout.CENTER);
+
+		        // Actualizar la interfaz
+		        contentPane.revalidate();
+		        contentPane.repaint();
+		    }
+		});
+		
 		mnVer.add(mntmListar);
 		
 		JMenuItem mntmUnoXUno = new JMenuItem("Visualizar uno a uno");
@@ -121,7 +152,20 @@ public class FrmPrincipal extends JFrame {
 		JMenuItem mntmNewCtaCorriente = new JMenuItem("Nueva cuenta corriente");
 		mnInsertar.add(mntmNewCtaCorriente);
 		
-		JPanel panel = new JPanel();
-		contentPane.add(panel, BorderLayout.CENTER);
+		cuentas = ctrl.cargarDesdeFichero();
+		contentPane.add(panJList, BorderLayout.CENTER);
+		
+	}
+
+
+	private void addComponents() {
+
+		panJList = new PanelJLista(cuentas);
+		mnOpciones = new JMenu("Opciones");
+		
+		
+		
+		
+
 	}
 }

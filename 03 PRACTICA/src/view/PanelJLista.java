@@ -17,8 +17,6 @@ public class PanelJLista extends JPanel {
 
     public PanelJLista(List<Cuenta> lista) {
         setLayout(null);
-
-        System.out.println("Se ha creado el panel");
         initComponents(lista);
     }
 
@@ -27,19 +25,23 @@ public class PanelJLista extends JPanel {
         jList1 = new JList<>();
 
         // Configurar el JScrollPane y JList
-        jList1.setModel(modeloLista(lista));
+        actualizarLista(lista);
         scrollPane.setViewportView(jList1);
         scrollPane.setBounds(0, 19, 450, 281);
 
         add(scrollPane); // Añadir JScrollPane al panel
 
-        System.out.println("Se ha configurado el JList y JScrollPane");
+        
     }
+
+	public void actualizarLista(List<Cuenta> lista) {
+		jList1.setModel(modeloLista(lista));
+	}
 
     private DefaultListModel<String> modeloLista(List<Cuenta> lista) {
         DefaultListModel<String> modelo = new DefaultListModel<>();
 
-        System.out.println("Se están metiendo los datos");
+       
 
         if (lista == null || lista.isEmpty()) {
             modelo.addElement("No hay elementos");

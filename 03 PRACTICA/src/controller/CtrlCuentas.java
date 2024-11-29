@@ -7,10 +7,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import model.Cuenta;
+import model.CuentaAhorro;
+import model.CuentaCorriente;
+import model.TipoComision;
+import model.exceptions.ESaldoNoValido;
 
 public class CtrlCuentas {
 
@@ -30,20 +36,17 @@ public class CtrlCuentas {
 	    List<Cuenta> lista = new ArrayList<>();
 	    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(ruta))) {
 	        // Comprobamos si hay algo que leer
-	        // if (ois.available() > 0) { 
-	        	
-	            lista = (List<Cuenta>) ois.readObject();
-//	        } else {
-//	            System.out.println("El archivo está vacío.");
-//	        }
+	    	lista = (List<Cuenta>) ois.readObject();
+       
 	    } catch (FileNotFoundException e) {
-	        System.out.println("El archivo no se encontró.");
+	        System.err.println("El archivo no se encontró.");
 	        lista = null;
 	    } catch (IOException e) {
-	        System.out.println("Error de entrada/salida: " + e.getMessage());
+	        System.err.println("No hay cuentas guardadas en el fichero.");
 	    } catch (ClassNotFoundException e) {
-	        System.out.println("Error al cargar las clases: " + e.getMessage());
+	        System.err.println("Error al cargar las clases: " + e.getMessage());
 	    }
+	    
 	    return lista;
 	}
 
@@ -55,10 +58,38 @@ public class CtrlCuentas {
 	    try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ruta))) {
 	        oos.writeObject(lista);
 	    } catch (FileNotFoundException e) {
-	        System.out.println("El archivo no se pudo encontrar.");
+	        System.err.println("El archivo no se pudo encontrar.");
 	    } catch (IOException e) {
-	        System.out.println("Error al escribir en el archivo: " + e.getMessage());
+	        System.err.println("Error al escribir en el archivo: " + e.getMessage());
 	    }
+	}
+	
+	public List<Cuenta> cargarTest() throws ESaldoNoValido {
+	    List<Cuenta> lista = new ArrayList<>();
+	    final int CANT_CUENTA_CORRIENTE = 2;
+	    final int CANT_CUENTA_AHORRO = 2;
+	    int num_cuenta_aleatorio = 0;
+	    int cont = 1;
+	    
+	    for (int i = 0; i < CANT_CUENTA_CORRIENTE; i++) {
+	    	num_cuenta_aleatorio = (int) (Math.random() * 1000) + 1;
+	    	System.out.println(num_cuenta_aleatorio);
+	    	CuentaCorriente cc = new CuentaCorriente(num_cuenta_aleatorio, "TEST" + cont, 1000.0, 10.0, LocalDate.now(), 100.0, TipoComision.Estudio);
+	    	lista.add(cc);
+	    	
+	    	cont++;
+		}
+	    
+	    for (int i = 0; i < CANT_CUENTA_AHORRO; i++) {
+	    	num_cuenta_aleatorio = (int) (Math.random() * 1000) + 1;
+			System.out.println(num_cuenta_aleatorio);
+	    	CuentaAhorro ca = new CuentaAhorro(num_cuenta_aleatorio, "TEST" + cont, 1000.0, 10.0, LocalDate.now(), 100.0, 200.0);
+	    	lista.add(ca);
+	    	
+	    	cont++;
+		}
+	    
+	    return lista;
 	}
 
 }

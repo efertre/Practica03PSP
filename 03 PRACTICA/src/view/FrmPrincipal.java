@@ -67,7 +67,8 @@ public class FrmPrincipal extends JFrame {
 		
 		mntmVaciarLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				cuentas = null;
+				panJList.actualizarLista(cuentas);
 			}
 		});
 		
@@ -76,9 +77,14 @@ public class FrmPrincipal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				cuentas = ctrl.cargarDesdeFichero();
 				
+				
+				// DEPURACIÓN 
 				for (Cuenta cuenta : cuentas) {
 					System.out.println(cuenta);
 				}
+				
+				panJList.actualizarLista(cuentas);
+				
 			}
 		});
 		
@@ -89,6 +95,7 @@ public class FrmPrincipal extends JFrame {
 				
 				Cuenta c;
 				try {
+					
 					c = new Cuenta(1, "Prueba", 200.0, 100.0, LocalDate.now());
 					cuentas.add(c);
 					ctrl.guardarEnFichero(cuentas);
@@ -97,9 +104,7 @@ public class FrmPrincipal extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
-				
-				
+
 				
 			}
 		});
@@ -112,7 +117,6 @@ public class FrmPrincipal extends JFrame {
 		    	
 		        panJList = new PanelJLista(cuentas);
 
-		        
 
 		        // Añadir el nuevo panel
 		        panPrincipal.add(panJList, BorderLayout.CENTER);
@@ -123,9 +127,22 @@ public class FrmPrincipal extends JFrame {
 		    }
 		});
 		
-		
-		
-				
+		mntmCargarTest.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		    	
+		    	
+		        try {
+					
+		        	cuentas = ctrl.cargarTest();
+					panJList.actualizarLista(cuentas);
+					
+				} catch (ESaldoNoValido e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+		    }
+		});
+			
 	}
 
 

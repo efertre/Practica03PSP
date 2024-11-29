@@ -77,5 +77,8 @@ public class FrmPrincipal extends JFrame {
 		
 		JMenuItem mntmNewCtaCorriente = new JMenuItem("Nueva cuenta corriente");
 		mnInsertar.add(mntmNewCtaCorriente);
+		
+		JPanel panel = new JPanel();
+		contentPane.add(panel, BorderLayout.CENTER);
 	}
 }

@@ -24,16 +24,18 @@ import model.exceptions.ESaldoNoValido;
 public class FrmPrincipal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+	private JPanel panPrincipal;
 	
 	private String ruta = "prueba.dat";
 
 	private CtrlCuentas ctrl = new CtrlCuentas(ruta);
-	private List<Cuenta> cuentas = new ArrayList<Cuenta>();
+	private List<Cuenta> cuentas = new ArrayList<>() ;
 	
 	private PanelJLista panJList;
 	private JMenu mnOpciones, mnVer, mnInsertar;
 	private JMenuBar mnPrincipal;
+	private JMenuItem mntmVaciarLista, mntmCargarTest, mntmCargarDatos, mntmGuardarDatos, mntmListar, mntmUnoXUno, mntmNewCtaAhorro,  mntmNewCtaCorriente;
+	
 	
 
 	/**
@@ -46,41 +48,30 @@ public class FrmPrincipal extends JFrame {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		
 		setResizable(false);
 		setLocationRelativeTo(null);	
 		setTitle("Práctica 03 - Ema y Paula");
 		
 
 		addComponents();
-		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
+		addListeners();
 		
-		JMenuBar mnPrincipal = new JMenuBar();
-		contentPane.add(mnPrincipal, BorderLayout.NORTH);
-		
-		
-		mnPrincipal.add(mnOpciones);
 
 		
-		JMenuItem mntmVaciarLista = new JMenuItem("Vaciar Lista");
+		
+	}
+
+
+	private void addListeners() {
+		
 		mntmVaciarLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 			}
 		});
-		mnOpciones.add(mntmVaciarLista);
-		mntmVaciarLista.setHorizontalAlignment(SwingConstants.LEFT);
 		
-		JMenuItem mntmCargarTest = new JMenuItem("Cargar Test");
-		mntmCargarTest.setHorizontalAlignment(SwingConstants.LEFT);
-		mnOpciones.add(mntmCargarTest);
-		
-		JSeparator separator = new JSeparator();
-		mnOpciones.add(separator);
-		
-		JMenuItem mntmCargarDatos = new JMenuItem("Cargar Datos");
+
 		mntmCargarDatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cuentas = ctrl.cargarDesdeFichero();
@@ -90,10 +81,9 @@ public class FrmPrincipal extends JFrame {
 				}
 			}
 		});
-		mnOpciones.add(mntmCargarDatos);
-		mntmCargarDatos.setHorizontalAlignment(SwingConstants.LEFT);
 		
-		JMenuItem mntmGuardarDatos = new JMenuItem("Guardar Datos");
+		
+		
 		mntmGuardarDatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -113,57 +103,107 @@ public class FrmPrincipal extends JFrame {
 				
 			}
 		});
-		mnOpciones.add(mntmGuardarDatos);
-		mntmGuardarDatos.setHorizontalAlignment(SwingConstants.LEFT);
 		
-		JMenu mnVer = new JMenu("Ver");
-		mnVer.setHorizontalAlignment(SwingConstants.CENTER);
-		mnPrincipal.add(mnVer);
 		
-		JMenuItem mntmListar = new JMenuItem("Listar todos");
+		
 		mntmListar.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		    	
 		    	
-		        PanelJLista panJList = new PanelJLista(cuentas);
+		        panJList = new PanelJLista(cuentas);
 
 		        
 
 		        // Añadir el nuevo panel
-		        contentPane.add(panJList, BorderLayout.CENTER);
+		        panPrincipal.add(panJList, BorderLayout.CENTER);
 
 		        // Actualizar la interfaz
-		        contentPane.revalidate();
-		        contentPane.repaint();
+		        panPrincipal.revalidate();
+		        panPrincipal.repaint();
 		    }
 		});
 		
-		mnVer.add(mntmListar);
 		
-		JMenuItem mntmUnoXUno = new JMenuItem("Visualizar uno a uno");
-		mnVer.add(mntmUnoXUno);
 		
-		JMenu mnInsertar = new JMenu("Insertar");
-		mnPrincipal.add(mnInsertar);
-		
-		JMenuItem mntmNewCtaAhorro = new JMenuItem("Nueva cuenta de ahorro");
-		mnInsertar.add(mntmNewCtaAhorro);
-		
-		JMenuItem mntmNewCtaCorriente = new JMenuItem("Nueva cuenta corriente");
-		mnInsertar.add(mntmNewCtaCorriente);
-		
-		cuentas = ctrl.cargarDesdeFichero();
-		contentPane.add(panJList, BorderLayout.CENTER);
-		
+				
 	}
 
 
 	private void addComponents() {
+		
+		
+		cuentas = ctrl.cargarDesdeFichero();
 
+		panPrincipal = new JPanel();
+		panPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(panPrincipal);
+		panPrincipal.setLayout(new BorderLayout(0, 0));
+
+		
+		
 		panJList = new PanelJLista(cuentas);
+		
+		
+		mntmVaciarLista = new JMenuItem("Vaciar Lista");
+		mntmVaciarLista.setHorizontalAlignment(SwingConstants.LEFT);
+		
+		mntmCargarTest = new JMenuItem("Cargar Test");
+		mntmCargarTest.setHorizontalAlignment(SwingConstants.LEFT);
+		
+		mntmCargarDatos = new JMenuItem("Cargar Datos");
+		mntmCargarDatos.setHorizontalAlignment(SwingConstants.LEFT);
+		
+		mntmGuardarDatos = new JMenuItem("Guardar Datos");
+		mntmGuardarDatos.setHorizontalAlignment(SwingConstants.LEFT);
+		
 		mnOpciones = new JMenu("Opciones");
 		
+		mnOpciones.add(mntmVaciarLista);
+		mnOpciones.add(mntmCargarTest);
 		
+		JSeparator separator = new JSeparator();
+		mnOpciones.add(separator);
+		
+		mnOpciones.add(mntmCargarDatos);
+		mnOpciones.add(mntmGuardarDatos);
+
+		
+		
+		mntmListar = new JMenuItem("Listar todos");
+		
+		mntmUnoXUno = new JMenuItem("Visualizar uno a uno");
+
+		mnVer = new JMenu("Ver");
+		mnVer.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		mnVer.add(mntmListar);
+		mnVer.add(mntmUnoXUno);
+
+
+		
+		mntmNewCtaAhorro = new JMenuItem("Nueva cuenta de ahorro");
+		mntmNewCtaCorriente = new JMenuItem("Nueva cuenta corriente");
+
+		
+		mnInsertar = new JMenu("Insertar");
+
+		mnInsertar.add(mntmNewCtaAhorro);
+		mnInsertar.add(mntmNewCtaCorriente);
+
+
+		
+		mnPrincipal = new JMenuBar();
+		mnPrincipal.add(mnOpciones);
+		mnPrincipal.add(mnVer);
+		mnPrincipal.add(mnInsertar);
+
+		
+		
+		panPrincipal.add(mnPrincipal, BorderLayout.NORTH);
+
+		
+
+		panPrincipal.add(panJList, BorderLayout.CENTER);
 		
 		
 

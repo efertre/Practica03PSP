@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 
+import javax.swing.JOptionPane;
+
 import model.exceptions.ESaldoNoValido;
 
 public class Cuenta implements FechaCalculable, Serializable {
@@ -83,6 +85,35 @@ public class Cuenta implements FechaCalculable, Serializable {
         Period periodo = Period.between(getFechaApertura(), LocalDate.now());
         return periodo.getYears();
     }
+    
+    public void calcularSaldo(Cuenta cuenta) {
+        try {
+            LocalDate hoy = LocalDate.now();
+            boolean esDiaDeMes = cuenta.getFechaApertura().getDayOfMonth() == hoy.getDayOfMonth();
+            boolean esDiaDeAnio = esDiaDeMes && cuenta.getFechaApertura().getMonthValue() == hoy.getMonthValue();
+
+            if (esDiaDeAnio) {
+                // Incrementar saldo por interés anual
+                double interesAnual = 0.05; // Ejemplo: 5% de interés
+                double nuevoSaldo = cuenta.getSaldo() * (1 + interesAnual);
+                cuenta.setSaldo(nuevoSaldo);
+                JOptionPane.showMessageDialog(null, "Saldo actualizado con interés anual: " + nuevoSaldo);
+            } else if (esDiaDeMes) {
+                // Decrementar saldo por comisión mensual
+                double comisionMensual = 10.0; // Ejemplo: comisión de 10€
+                double nuevoSaldo = cuenta.getSaldo() - comisionMensual;
+                cuenta.setSaldo(nuevoSaldo);
+                JOptionPane.showMessageDialog(null, "Saldo actualizado con comisión mensual: " + nuevoSaldo);
+            } else {
+                JOptionPane.showMessageDialog(null, "No se cumple el periodo de cálculo.");
+            }
+        } catch (ESaldoNoValido ex) {       	
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage(), "Saldo Inválido", JOptionPane.ERROR_MESSAGE);
+   
+        }
+    }
+
+    
 
     private void writeObject(ObjectOutputStream oos) throws IOException {
         oos.defaultWriteObject(); // Serializa los campos no transient

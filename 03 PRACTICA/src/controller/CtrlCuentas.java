@@ -32,31 +32,24 @@ public class CtrlCuentas {
 
 	}
 
-	public List<Cuenta> cargarDesdeFichero() {
-	    List<Cuenta> lista = new ArrayList<>();
+	public Lista<Cuenta> cargarDesdeFichero()  {
 	    try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(ruta))) {
-	        // Comprobamos si hay algo que leer
-	    	lista = (List<Cuenta>) ois.readObject();
-       
+	        return (Lista<Cuenta>) ois.readObject(); // Deserializa la lista
 	    } catch (FileNotFoundException e) {
-	        System.err.println("El archivo no se encontró.");
-	        lista = null;
+	        System.err.println("El archivo no se pudo encontrar.");
 	    } catch (IOException e) {
-	        System.err.println("No hay cuentas guardadas en el fichero.");
+	        System.err.println("Error al leer del archivo: " + e.getMessage());
 	    } catch (ClassNotFoundException e) {
-	        System.err.println("Error al cargar las clases: " + e.getMessage());
+	        System.err.println("Error: Clase no encontrada al deserializar.");
 	    }
-	    
-	    return lista;
+	    return null; // Retorna null si ocurre algún error
 	}
 
-	public void guardarEnFichero(List<Cuenta> lista) {
-	    if (lista == null || lista.isEmpty()) {
-	        System.out.println("No hay datos para guardar.");
-	        return; 
-	    }
+
+	public void guardarEnFichero(Lista<Cuenta> lista) {
 	    try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(ruta))) {
-	        oos.writeObject(lista);
+	        oos.writeObject(lista); // Serializa la lista completa
+	        System.out.println("La lista se ha guardado correctamente en: " + ruta);
 	    } catch (FileNotFoundException e) {
 	        System.err.println("El archivo no se pudo encontrar.");
 	    } catch (IOException e) {
@@ -64,8 +57,8 @@ public class CtrlCuentas {
 	    }
 	}
 	
-	public List<Cuenta> cargarTest() throws ESaldoNoValido {
-	    List<Cuenta> lista = new ArrayList<>();
+	public Lista<Cuenta> cargarTest() throws ESaldoNoValido {
+	    Lista<Cuenta> lista = new Lista<>();
 	    final int CANT_CUENTA_CORRIENTE = 2;
 	    final int CANT_CUENTA_AHORRO = 2;
 	    int num_cuenta_aleatorio = 0;
@@ -73,23 +66,25 @@ public class CtrlCuentas {
 	    
 	    for (int i = 0; i < CANT_CUENTA_CORRIENTE; i++) {
 	    	num_cuenta_aleatorio = (int) (Math.random() * 1000) + 1;
-	    	System.out.println(num_cuenta_aleatorio);
+	    	
 	    	CuentaCorriente cc = new CuentaCorriente(num_cuenta_aleatorio, "TEST" + cont, 1000.0, 10.0, LocalDate.now(), 100.0, TipoComision.Estudio);
-	    	lista.add(cc);
+	    	lista.insertarNodo(cc);
 	    	
 	    	cont++;
 		}
 	    
 	    for (int i = 0; i < CANT_CUENTA_AHORRO; i++) {
 	    	num_cuenta_aleatorio = (int) (Math.random() * 1000) + 1;
-			System.out.println(num_cuenta_aleatorio);
+		
 	    	CuentaAhorro ca = new CuentaAhorro(num_cuenta_aleatorio, "TEST" + cont, 1000.0, 10.0, LocalDate.now(), 100.0, 200.0);
-	    	lista.add(ca);
+	    	lista.insertarNodo(ca);
 	    	
 	    	cont++;
 		}
 	    
 	    return lista;
 	}
+	
+	
 
 }

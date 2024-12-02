@@ -1,7 +1,13 @@
 package controller;
 
-public class Lista<E> {
-	private Node<E> inicio;
+import java.io.Serializable;
+
+public class Lista<E> implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	public Node<E> inicio;
 
 	public Lista() {
 		this.inicio = null;
@@ -21,7 +27,7 @@ public class Lista<E> {
 		this.inicio = nuevoNodo;
 	}
 
-	public class Node<E> {
+	public class Node<E> implements Serializable {
 		private Node<E> siguiente;
 		E principal;
 

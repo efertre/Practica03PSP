@@ -26,6 +26,7 @@ public class PanVerUnoxUno extends JPanel {
 
 		btnAnterior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 			}
 		});
 		

@@ -42,9 +42,7 @@ public class FrmPrincipal extends JFrame {
 	 */
 	public FrmPrincipal() {
 		
-		
-		
-		
+			
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 464, 380);
 		
@@ -52,11 +50,10 @@ public class FrmPrincipal extends JFrame {
 		setLocationRelativeTo(null);	
 		setTitle("Práctica 03 - Ema y Paula");
 		
-
+		
 		addComponents();
 		addListeners();
 		
-
 		
 		
 	}

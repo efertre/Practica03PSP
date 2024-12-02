@@ -24,14 +24,13 @@ import model.exceptions.ESaldoNoValido;
 public class FrmPrincipal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel panPrincipal;
+	private JPanel panPrincipal, panJList, panVerUnoxUno;
 	
 	private String ruta = "prueba.dat";
 
 	private CtrlCuentas ctrl = new CtrlCuentas(ruta);
 	private List<Cuenta> cuentas = new ArrayList<>() ;
 	
-	private PanelJLista panJList;
 	private JMenu mnOpciones, mnVer, mnInsertar;
 	private JMenuBar mnPrincipal;
 	private JMenuItem mntmVaciarLista, mntmCargarTest, mntmCargarDatos, mntmGuardarDatos, mntmListar, mntmUnoXUno, mntmNewCtaAhorro,  mntmNewCtaCorriente;
@@ -68,7 +67,7 @@ public class FrmPrincipal extends JFrame {
 		mntmVaciarLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cuentas = null;
-				panJList.actualizarLista(cuentas);
+				((PanelJLista) panJList).actualizarLista(cuentas);
 			}
 		});
 		
@@ -83,7 +82,7 @@ public class FrmPrincipal extends JFrame {
 					System.out.println(cuenta);
 				}
 				
-				panJList.actualizarLista(cuentas);
+				((PanelJLista) panJList).actualizarLista(cuentas);
 				
 			}
 		});
@@ -117,6 +116,7 @@ public class FrmPrincipal extends JFrame {
 		    	
 		        panJList = new PanelJLista(cuentas);
 
+		        panPrincipal.remove(panVerUnoxUno);
 
 		        // Añadir el nuevo panel
 		        panPrincipal.add(panJList, BorderLayout.CENTER);
@@ -134,7 +134,7 @@ public class FrmPrincipal extends JFrame {
 		        try {
 					
 		        	cuentas = ctrl.cargarTest();
-					panJList.actualizarLista(cuentas);
+					((PanelJLista) panJList).actualizarLista(cuentas);
 					
 				} catch (ESaldoNoValido e1) {
 					// TODO Auto-generated catch block
@@ -143,6 +143,22 @@ public class FrmPrincipal extends JFrame {
 		    }
 		});
 			
+		
+		mntmUnoXUno.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				panVerUnoxUno = new PanVerUnoxUno();
+
+				panPrincipal.remove(panJList);
+
+		        // Añadir el nuevo panel
+		        panPrincipal.add(panVerUnoxUno, BorderLayout.CENTER);
+
+		        // Actualizar la interfaz
+		        panPrincipal.revalidate();
+		        panPrincipal.repaint(); 
+			}
+		});
 	}
 
 
@@ -189,6 +205,7 @@ public class FrmPrincipal extends JFrame {
 		mntmListar = new JMenuItem("Listar todos");
 		
 		mntmUnoXUno = new JMenuItem("Visualizar uno a uno");
+
 
 		mnVer = new JMenu("Ver");
 		mnVer.setHorizontalAlignment(SwingConstants.CENTER);

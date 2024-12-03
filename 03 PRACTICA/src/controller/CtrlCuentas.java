@@ -88,9 +88,48 @@ public class CtrlCuentas {
 	public static boolean comprobarFechaFutura(LocalDate fecha) {
 	    return LocalDate.now().isBefore(fecha);
 	}
-
-   
 	
 	
+	public Lista<Cuenta> generarCuentasAleatorias(Lista<Cuenta> lista, int cantidad) {
+		
+	    for (int i = 0; i < cantidad; i++) {	
+	        int numero = 1001 + (int) (Math.random() * 9000); // Números mayores a 1000
+	        String titular = "Titular" + numero;
+	        double saldo = Math.random() * 10000 + 350; // Saldo aleatorio entre 350 y 10,000
+	       
+	        LocalDate fechaApertura = LocalDate.now().minusDays((long) (Math.random() * 365 * 5)); // Fecha aleatoria en los últimos 5 años
 
+	        // Generar aleatoriamente si será CuentaAhorro o CuentaCorriente
+	        boolean esCuentaAhorro = Math.random() < 0.5;
+
+	        try {
+	            if (esCuentaAhorro) {
+	                // Atributos específicos de CuentaAhorro
+	                double interesAnual = 0.01 + Math.random() * 0.05; // Interés entre 1% y 5%
+	                double ahorros = 1000 + Math.random() * 9000; // Ahorros entre 1000 y 10000
+	                CuentaAhorro cuentaAhorro = new CuentaAhorro(numero, titular, saldo, fechaApertura, interesAnual, ahorros);
+	                lista.insertarNodo(cuentaAhorro);
+	            } else {
+	                // Atributos específicos de CuentaCorriente
+	                double comisionMensual = 5 + Math.random() * 15; // Comisión entre 5 y 20
+	                TipoComision tipoComision = generarTipoComisionAleatorio(); // Selecciona un tipo aleatorio
+	                CuentaCorriente cuentaCorriente = new CuentaCorriente(numero, titular, saldo, fechaApertura, comisionMensual, tipoComision);
+	                lista.insertarNodo(cuentaCorriente);
+	            }
+	        } catch (ESaldoNoValido e) {
+	            System.err.println("Error al generar cuenta: " + e.getMessage());
+	        }
+	    
+	    }
+		return lista;
+	}
+
+
+	private TipoComision generarTipoComisionAleatorio() {
+		
+		    TipoComision[] valores = TipoComision.values();
+		    int indiceAleatorio = (int) (Math.random() * valores.length);
+		    return valores[indiceAleatorio];
+		
+	}
 }

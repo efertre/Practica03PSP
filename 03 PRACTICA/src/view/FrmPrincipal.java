@@ -36,6 +36,7 @@ public class FrmPrincipal extends JFrame {
 
 	private PanInsertarCuentaCorriente<Cuenta> panInsertarCuentaCorriente;
 	private PanInsertarCuentaAhorro<Cuenta> panInsertarCuentaAhorro;
+	private JMenuItem mntmCargar10K;
 
 	/**
 	 * Crea el frame
@@ -83,6 +84,10 @@ public class FrmPrincipal extends JFrame {
 
 		mnOpciones.add(mntmVaciarLista);
 		mnOpciones.add(mntmCargarTest);
+		
+		mntmCargar10K = new JMenuItem("Cargar 10K");
+		mntmCargar10K.setHorizontalAlignment(SwingConstants.LEFT);
+		mnOpciones.add(mntmCargar10K);
 
 		JSeparator separator = new JSeparator();
 		mnOpciones.add(separator);
@@ -147,7 +152,21 @@ public class FrmPrincipal extends JFrame {
 
 			}
 		});
+		
+		mntmCargar10K.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				cuentas = ctrl.generarCuentasAleatorias(cuentas, 10000);
 
+				((PanVerUnoxUno) panVerUnoxUno).actualizarLista(cuentas);
+
+				// Si el panel de listado ya existe, actualízalo con la nueva lista
+				if (panJList instanceof PanelJLista) {
+					((PanelJLista) panJList).actualizarLista(cuentas);
+				}
+				
+			}
+		});
 		mntmGuardarDatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (cuentas == null) {

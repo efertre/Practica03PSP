@@ -166,11 +166,21 @@ public class PanVerUnoxUno<E> extends JPanel {
 
 	private boolean debeCalcular(Cuenta cuenta) {
 		LocalDate hoy = LocalDate.now();
-		boolean esDiaDeMes = cuenta.getFechaApertura().getDayOfMonth() == hoy.getDayOfMonth();
-		boolean esDiaDeAnio = esDiaDeMes && cuenta.getFechaApertura().getMonthValue() == hoy.getMonthValue();
+		LocalDate fechaApertura = cuenta.getFechaApertura();
+		
+		
+		
+		boolean esDiaDeMes = false;;
+		boolean esDiaDeAnio = false;
+		if(fechaApertura.compareTo(hoy) != 0) {
+			 esDiaDeMes = fechaApertura.getDayOfMonth() == hoy.getDayOfMonth();
+			 esDiaDeAnio = esDiaDeMes && fechaApertura.getMonthValue() == hoy.getMonthValue();
+		}
+		
 
 		return esDiaDeMes || esDiaDeAnio;
 	}
+
 
 	public void actualizarSaldo(Cuenta cuenta) {
 		tfSaldo.setText(String.valueOf(cuenta.getSaldo()));

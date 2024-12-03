@@ -89,11 +89,14 @@ public class Cuenta implements FechaCalculable, Serializable {
 				cuenta.setSaldo(nuevoSaldo);
 				JOptionPane.showMessageDialog(null, "Saldo actualizado con interés anual: " + nuevoSaldo);
 			} else if (esDiaDeMes) {
-				// Decrementar saldo por comisión mensual
-				double comisionMensual = 10.0; // Ejemplo: comisión de 10€
-				double nuevoSaldo = cuenta.getSaldo() - comisionMensual;
-				cuenta.setSaldo(nuevoSaldo);
-				JOptionPane.showMessageDialog(null, "Saldo actualizado con comisión mensual: " + nuevoSaldo);
+				if(cuenta instanceof CuentaAhorro ) {
+					// Decrementar saldo por comisión mensual
+					double comisionMensual = 10.0; // Ejemplo: comisión de 10€
+					double nuevoSaldo = cuenta.getSaldo() - comisionMensual;
+					cuenta.setSaldo(nuevoSaldo);
+					JOptionPane.showMessageDialog(null, "Saldo actualizado con comisión mensual: " + nuevoSaldo);
+				}
+				
 			} else {
 				JOptionPane.showMessageDialog(null, "No se cumple el periodo de cálculo.");
 			}

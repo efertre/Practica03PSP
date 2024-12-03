@@ -41,8 +41,15 @@ public class CuentaAhorro extends Cuenta implements FechaCalculable, Serializabl
 
 	@Override
 	public String toString() {
-		return "CuentaAhorro [interesAnual=" + interesAnual + ", ahorros=" + ahorros + ", toString()="
-				+ super.toString() + "]";
+	    return String.format("Cuenta de Ahorro: " +
+	                         "Interés anual: %.2f%% " +  // Mostrar el interés como porcentaje
+	                         "Ahorros: %.2f " +
+	                         "%s", 
+	                         interesAnual * 100,  // Convertir el valor decimal a porcentaje
+	                         ahorros, 
+	                         super.toString());
 	}
+
+
 
 }

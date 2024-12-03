@@ -134,6 +134,7 @@ public class PanInsertarCuentaAhorro<E> extends JPanel {
 
 					// Guardar la lista de cuentas en el archivo
 					ctrl.guardarEnFichero((Lista<Cuenta>) lista);
+					
 
 					// Mostrar mensaje de éxito
 					JOptionPane.showMessageDialog(PanInsertarCuentaAhorro.this, "Cuenta insertada correctamente.",

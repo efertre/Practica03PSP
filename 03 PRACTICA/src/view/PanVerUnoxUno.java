@@ -28,7 +28,12 @@ public class PanVerUnoxUno<E> extends JPanel {
 	private Lista<E> lista; // Lista personalizada
 	private Lista<E>.Node<E> nodoActual; // Nodo actualmente seleccionado
 
+
+	
+	private CtrlCuentas ctrl;
+	
 	public PanVerUnoxUno(Lista<E> lista) {
+		 ctrl = new CtrlCuentas("prueba.dat");
 		this.lista = lista;
 		this.nodoActual = lista.getInicio(); // Comenzamos en el inicio de la lista
 		setLayout(null);
@@ -149,12 +154,11 @@ public class PanVerUnoxUno<E> extends JPanel {
 					// Comprobar si ha pasado un mes o un año
 					if (debeCalcular(cuenta)) {
 						// Llamar al método que realiza el cálculo de saldo
-						cuenta.calcularSaldo(cuenta);
+						ctrl.calcularSaldo(cuenta);
 
 						// Si el saldo es válido, actualizar el saldo en la UI o la lista
 						actualizarSaldo(cuenta);
 
-						CtrlCuentas ctrl = new CtrlCuentas("prueba.dat");
 						ctrl.guardarEnFichero((Lista<Cuenta>) lista);
 
 					}
@@ -166,14 +170,20 @@ public class PanVerUnoxUno<E> extends JPanel {
 
 	private boolean debeCalcular(Cuenta cuenta) {
 		LocalDate hoy = LocalDate.now();
-		boolean esDiaDeMes = cuenta.getFechaApertura().getDayOfMonth() == hoy.getDayOfMonth();
-		boolean esDiaDeAnio = esDiaDeMes && cuenta.getFechaApertura().getMonthValue() == hoy.getMonthValue();
+		 System.out.println("Fecha actual: " + hoy); // Depura la fecha actual
+		    System.out.println("Fecha de apertura: " + cuenta.getFechaApertura()); // Depura la fecha de apertura
+
+		    boolean esDiaDeMes = cuenta.getFechaApertura().getDayOfMonth() == hoy.getDayOfMonth();
+		    boolean esDiaDeAnio = esDiaDeMes && cuenta.getFechaApertura().getMonthValue() == hoy.getMonthValue();
+		    
+		    System.out.println("¿Es el mismo día del mes? " + esDiaDeMes); // Depura si el día del mes es el mismo
+		    System.out.println("¿Es el mismo día del año? " + esDiaDeAnio); // Depura si es el mismo día y mes del año
 
 		return esDiaDeMes || esDiaDeAnio;
 	}
 
 	public void actualizarSaldo(Cuenta cuenta) {
-		tfSaldo.setText(String.valueOf(cuenta.getSaldo()));
+		tfSaldo.setText(String.format("%.2f",cuenta.getSaldo()));
 	}
 
 	private void actualizarVista() {
@@ -191,14 +201,14 @@ public class PanVerUnoxUno<E> extends JPanel {
 		Cuenta cuenta = (Cuenta) nodoActual.getPrincipal();
 		tfNumero.setText(cuenta.getNumero().toString());
 		tfTitular.setText(cuenta.getTitular());
-		tfSaldo.setText(String.valueOf(cuenta.getSaldo()));
+		tfSaldo.setText(String.format("%.2f",cuenta.getSaldo()));
 		tfFecha.setText(cuenta.getFechaApertura().toString());
 
 		if (cuenta instanceof CuentaCorriente) {
 			lblComMant.setText("Comisión de Mantenimiento:");
 			lblTipo.setText("Tipo de Comisión:");
 
-			tfComMant.setText(((CuentaCorriente) cuenta).getComisionMantenimiento().toString());
+			tfComMant.setText(String.format("%.2f",((CuentaCorriente) cuenta).getComisionMantenimiento()));
 			tfTipo.setText(((CuentaCorriente) cuenta).getTipo().toString());
 		}
 
@@ -206,8 +216,8 @@ public class PanVerUnoxUno<E> extends JPanel {
 			lblComMant.setText("Ahorros:");
 			lblTipo.setText("Interés anual:");
 
-			tfComMant.setText(((CuentaAhorro) cuenta).getAhorros().toString());
-			tfTipo.setText(((CuentaAhorro) cuenta).getInteresAnual().toString());
+			tfComMant.setText(String.format("%.2f",((CuentaAhorro) cuenta).getAhorros()));
+			tfTipo.setText(String.format("%.2f", ((CuentaAhorro) cuenta).getInteresAnual() * 100) + "%");
 		}
 
 		// Habilita/Deshabilita botones según sea necesario

@@ -40,8 +40,14 @@ public class CuentaCorriente extends Cuenta implements FechaCalculable, Serializ
 
 	@Override
 	public String toString() {
-		return "CuentaCorriente [comisionMantenimiento=" + comisionMantenimiento + ", tipo=" + tipo + ", toString()="
-				+ super.toString() + "]";
+	    return String.format("Cuenta Corriente: " +
+	                         "Comisión de Mantenimiento: %.2f " +
+	                         "Tipo de Comisión: %s " +
+	                         "%s", 
+	                         comisionMantenimiento, 
+	                         tipo, 
+	                         super.toString());
 	}
+
 
 }

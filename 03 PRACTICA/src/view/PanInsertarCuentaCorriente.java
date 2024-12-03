@@ -153,7 +153,7 @@ public class PanInsertarCuentaCorriente<E> extends JPanel {
 						throw new EFechaNoValida();
 
 					// Crear una nueva cuenta corriente
-					CuentaCorriente nuevaCuenta = new CuentaCorriente(numero, titular, saldo, saldo, fecha,
+					CuentaCorriente nuevaCuenta = new CuentaCorriente(numero, titular, saldo, fecha,
 							comisionMantenimiento, tipoComision);
 
 					// Insertar la cuenta en la lista

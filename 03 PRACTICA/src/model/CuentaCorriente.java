@@ -13,10 +13,10 @@ public class CuentaCorriente extends Cuenta implements FechaCalculable, Serializ
 	private static final long serialVersionUID = 1L;
 	private Double comisionMantenimiento;
 	private TipoComision tipo;
-	
-	public CuentaCorriente(Integer numero, String titular, Double saldo, Double saldoMinimo,
-			LocalDate fechaApertura, Double comisionMantenimiento, TipoComision tipo) throws ESaldoNoValido {
-		super(numero, titular, saldo, saldoMinimo, fechaApertura);
+
+	public CuentaCorriente(Integer numero, String titular, Double saldo, LocalDate fechaApertura,
+			Double comisionMantenimiento, TipoComision tipo) throws ESaldoNoValido {
+		super(numero, titular, saldo, fechaApertura);
 
 		setComisionMantenimiento(comisionMantenimiento);
 		setTipo(tipo);
@@ -43,7 +43,5 @@ public class CuentaCorriente extends Cuenta implements FechaCalculable, Serializ
 		return "CuentaCorriente [comisionMantenimiento=" + comisionMantenimiento + ", tipo=" + tipo + ", toString()="
 				+ super.toString() + "]";
 	}
-	
-	
-	
+
 }

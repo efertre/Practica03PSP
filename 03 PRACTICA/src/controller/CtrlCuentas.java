@@ -65,7 +65,7 @@ public class CtrlCuentas {
 	    for (int i = 0; i < CANT_CUENTA_CORRIENTE; i++) {
 	    	num_cuenta_aleatorio = (int) (Math.random() * 1000) + 1;
 	    	
-	    	CuentaCorriente cc = new CuentaCorriente(num_cuenta_aleatorio, "TEST" + cont, 1000.0, 10.0, LocalDate.now(), 100.0, TipoComision.Estudio);
+	    	CuentaCorriente cc = new CuentaCorriente(num_cuenta_aleatorio, "TEST" + cont, 1000.0, LocalDate.now(), 100.0, TipoComision.Estudio);
 	    	lista.insertarNodo(cc);
 	    	
 	    	cont++;
@@ -74,7 +74,7 @@ public class CtrlCuentas {
 	    for (int i = 0; i < CANT_CUENTA_AHORRO; i++) {
 	    	num_cuenta_aleatorio = (int) (Math.random() * 1000) + 1;
 		
-	    	CuentaAhorro ca = new CuentaAhorro(num_cuenta_aleatorio, "TEST" + cont, 1000.0, 10.0, LocalDate.now(), 100.0, 200.0);
+	    	CuentaAhorro ca = new CuentaAhorro(num_cuenta_aleatorio, "TEST" + cont, 1000.0, LocalDate.now(), 100.0, 200.0);
 	    	lista.insertarNodo(ca);
 	    	
 	    	cont++;

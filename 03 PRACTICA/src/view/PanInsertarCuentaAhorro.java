@@ -124,7 +124,7 @@ public class PanInsertarCuentaAhorro<E> extends JPanel {
 						throw new EFechaNoValida();
 
 					// Crear una nueva cuenta de ahorro
-					CuentaAhorro nuevaCuenta = new CuentaAhorro(numero, titular, saldo, saldo, fecha, interesAnual,
+					CuentaAhorro nuevaCuenta = new CuentaAhorro(numero, titular, saldo, fecha, interesAnual,
 							ahorros);
 
 					// Insertar la cuenta en la lista

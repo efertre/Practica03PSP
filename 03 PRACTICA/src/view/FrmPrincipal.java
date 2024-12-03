@@ -35,7 +35,9 @@ public class FrmPrincipal extends JFrame {
 	private JMenuBar mnPrincipal;
 	private JMenuItem mntmVaciarLista, mntmCargarTest, mntmCargarDatos, mntmGuardarDatos, mntmListar, mntmUnoXUno, mntmNewCtaAhorro,  mntmNewCtaCorriente;
 	
-	
+	private PanInsertarCuentaCorriente<Cuenta> panInsertarCuentaCorriente;
+	private PanInsertarCuentaAhorro<Cuenta> panInsertarCuentaAhorro;
+
 
 	/**
 	 * Crea el frame
@@ -224,15 +226,22 @@ public class FrmPrincipal extends JFrame {
 
 		mntmNewCtaAhorro.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		        // TODO: Implementar creación de nueva cuenta de ahorro
+		    	// Crear una nueva instancia del panel de insertar cuenta corriente
+		        panInsertarCuentaAhorro = new PanInsertarCuentaAhorro<>(cuentas);
+		        // Cambiar el panel en el centro del JFrame
+		        cambiarPanel(panInsertarCuentaAhorro);
 		    }
 		});
 
 		mntmNewCtaCorriente.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		        // TODO: Implementar creación de nueva cuenta corriente
+		        // Crear una nueva instancia del panel de insertar cuenta corriente
+		        panInsertarCuentaCorriente = new PanInsertarCuentaCorriente<>(cuentas);
+		        // Cambiar el panel en el centro del JFrame
+		        cambiarPanel(panInsertarCuentaCorriente);
 		    }
 		});
+
 
 			
 	}

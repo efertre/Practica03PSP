@@ -2,18 +2,21 @@ package view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
+import controller.CtrlCuentas;
 import controller.Lista;
 import model.Cuenta;
 import model.CuentaAhorro;
 import model.CuentaCorriente;
-import javax.swing.SwingConstants;
+import model.exceptions.ESaldoNoValido;
 
 public class PanVerUnoxUno<E> extends JPanel {
 
@@ -141,14 +144,36 @@ public class PanVerUnoxUno<E> extends JPanel {
 		});
 
 		btnCalcular.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (nodoActual != null) {
-					E elemento = nodoActual.getPrincipal();
-					// Aquí puedes implementar la lógica específica para "calcular"
-					System.out.println("Calculando para: " + elemento.toString());
-				}
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        if (nodoActual != null) {
+		            Cuenta cuenta = (Cuenta) nodoActual.getPrincipal(); // Obtener la cuenta actual
+		            // Comprobar si ha pasado un mes o un año
+					if (debeCalcular(cuenta)) {
+					    // Llamar al método que realiza el cálculo de saldo
+					    cuenta.calcularSaldo(cuenta);
+
+					    // Si el saldo es válido, actualizar el saldo en la UI o la lista
+					    actualizarSaldo(cuenta);
+
+					    CtrlCuentas ctrl = new CtrlCuentas("prueba.dat");
+					    ctrl.guardarEnFichero((Lista<Cuenta>) lista);
+					    
+					}
+		        }
+		    }
 		});
+
+	}
+	private boolean debeCalcular(Cuenta cuenta) {
+	    LocalDate hoy = LocalDate.now();
+	    boolean esDiaDeMes = cuenta.getFechaApertura().getDayOfMonth() == hoy.getDayOfMonth();
+	    boolean esDiaDeAnio = esDiaDeMes && cuenta.getFechaApertura().getMonthValue() == hoy.getMonthValue();
+	    
+	    return esDiaDeMes || esDiaDeAnio;
+	}
+
+	public void actualizarSaldo(Cuenta cuenta) {
+	    tfSaldo.setText(String.valueOf(cuenta.getSaldo()));
 	}
 
 	private void actualizarVista() {

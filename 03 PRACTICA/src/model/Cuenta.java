@@ -31,7 +31,7 @@ public class Cuenta implements FechaCalculable, Serializable {
 	}
 
 	public void setNumero(Integer numero) {
-		if (numero == null || numero < 1 || numero > 1000) {
+		if (numero == null || numero < 1 || numero > 10000) {
 			throw new IllegalArgumentException("Número debe estar entre 1 y 1000");
 		}
 		this.numero = numero;

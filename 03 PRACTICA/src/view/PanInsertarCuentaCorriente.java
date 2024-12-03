@@ -111,70 +111,87 @@ public class PanInsertarCuentaCorriente<E> extends JPanel {
 					Double saldo = Double.parseDouble(tfSaldo.getText());
 					LocalDate fecha = LocalDate.parse(tfFecha.getText(), DateTimeFormatter.ISO_LOCAL_DATE);
 					Double comisionMantenimiento = Double.parseDouble(tfComMant.getText());
-					
+
 					// Obtener el texto del JTextField
 					String tipoComisionTexto = tfTipo.getText();
-					
+
 					// Lanzar exepcion de saldo si es negativo
-	                if(saldo < 0) {
-	                	throw new ESaldoNoValido("El saldo no debe ser negativo");
-	                } else if(saldo < Cuenta.saldoMinimo) {
-	                	throw new ESaldoNoValido("El saldo no debe ser menor a " + Cuenta.saldoMinimo);
+					if (saldo < 0) {
+						throw new ESaldoNoValido("El saldo no debe ser negativo");
+					} else if (saldo < Cuenta.saldoMinimo) {
+						throw new ESaldoNoValido("El saldo no debe ser menor a " + Cuenta.saldoMinimo);
 
-	                }
-	                	
+					}
 
-	                // Lanzar exepcion de fecha si es futura
-	                if(CtrlCuentas.comprobarFechaFutura(fecha)) 
-	                	throw new EFechaNoValida();
-	                
-					
-					tipoComisionTexto = tipoComisionTexto.substring(0, 1).toUpperCase() + tipoComisionTexto.substring(1).toLowerCase();
+					// Lanzar exepcion de fecha si es futura
+					if (CtrlCuentas.comprobarFechaFutura(fecha))
+						throw new EFechaNoValida();
+
+					tipoComisionTexto = tipoComisionTexto.substring(0, 1).toUpperCase()
+							+ tipoComisionTexto.substring(1).toLowerCase();
 
 					TipoComision tipoComision = null;
 					try {
-					    tipoComision = TipoComision.valueOf(tipoComisionTexto);  // Ahora debería coincidir con el enum
+						tipoComision = TipoComision.valueOf(tipoComisionTexto); // Ahora debería coincidir con el enum
 					} catch (IllegalArgumentException ex) {
-					    JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this, 
-					                                  "Tipo de comisión no válido: '" + tipoComisionTexto + "'", 
-					                                  "Error", JOptionPane.ERROR_MESSAGE);
-					    return;  // Salir del método si hay un error
+						JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this,
+								"Tipo de comisión no válido: '" + tipoComisionTexto + "'", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return; // Salir del método si hay un error
 					}
 
+					// Lanzar exepcion de saldo si es negativo
+					if (saldo < 0) {
+						throw new ESaldoNoValido("El saldo no debe ser negativo");
+					} else if (saldo < Cuenta.saldoMinimo) {
+						throw new ESaldoNoValido("El saldo no debe ser menor a " + Cuenta.saldoMinimo);
+
+					}
+
+					// Lanzar exepcion de fecha si es futura
+					if (CtrlCuentas.comprobarFechaFutura(fecha))
+						throw new EFechaNoValida();
 
 					// Crear una nueva cuenta corriente
-					CuentaCorriente nuevaCuenta = new CuentaCorriente(numero, titular, saldo, saldo, fecha, comisionMantenimiento, tipoComision);
-					
+					CuentaCorriente nuevaCuenta = new CuentaCorriente(numero, titular, saldo, saldo, fecha,
+							comisionMantenimiento, tipoComision);
+
 					// Insertar la cuenta en la lista
-					lista.insertarNodo((E) nuevaCuenta); 
+					lista.insertarNodo((E) nuevaCuenta);
 
 					// Guardar la lista de cuentas en el archivo
 					CtrlCuentas ctrl = new CtrlCuentas("prueba.dat");
 					ctrl.guardarEnFichero((Lista<Cuenta>) lista);
 
 					// Mostrar mensaje de éxito
-					JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this, "Cuenta insertada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this, "Cuenta insertada correctamente.",
+							"Éxito", JOptionPane.INFORMATION_MESSAGE);
 
 					// Limpiar los campos después de la inserción
 					limpiarCampos();
-				  } catch (NumberFormatException ex) {
-		                JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this, "Por favor, ingrese valores válidos.", "Error", JOptionPane.ERROR_MESSAGE);
-		            } catch (ESaldoNoValido ex) {
-		                JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-		            
-		            } catch (DateTimeParseException ex) {
-		                JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this, "El formato de la fecha es incorrecto.", "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this,
+							"Por favor, ingrese valores válidos.", "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (ESaldoNoValido ex) {
+					JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this, ex.getMessage(), "Error",
+							JOptionPane.ERROR_MESSAGE);
 
-		            
-		            }catch (EFechaNoValida ex) {
+				} catch (DateTimeParseException ex) {
+					JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this,
+							"El formato de la fecha es incorrecto.", "Error", JOptionPane.ERROR_MESSAGE);
 
-		                JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this, "La fecha no debe ser futura.", "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (EFechaNoValida ex) {
 
-		            } catch (Exception ex) {
+					JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this, "La fecha no debe ser futura.",
+							"Error", JOptionPane.ERROR_MESSAGE);
 
-		                JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this, "Error al insertar la cuenta.", "Error", JOptionPane.ERROR_MESSAGE);
-		            }
+				} catch (Exception ex) {
+
+					JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this, "Error al insertar la cuenta.",
+							"Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
+
 		});
 	}
 

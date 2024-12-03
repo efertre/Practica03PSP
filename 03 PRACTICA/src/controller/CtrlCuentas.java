@@ -6,11 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import model.Cuenta;
 import model.CuentaAhorro;
@@ -88,9 +84,13 @@ public class CtrlCuentas {
 	}
 	
 	// Metodo estatico que comprueba si una fecha es futura (devuelve false si no)s
+
 	public static boolean comprobarFechaFutura(LocalDate fecha) {
 	    return LocalDate.now().isBefore(fecha);
 	}
+
+   
+	
 	
 
 }

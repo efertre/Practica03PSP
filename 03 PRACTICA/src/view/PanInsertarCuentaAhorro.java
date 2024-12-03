@@ -14,13 +14,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import controller.CtrlCuentas;
+import controller.Lista;
 import model.Cuenta;
 import model.CuentaAhorro;
-import model.CuentaCorriente;
-import model.TipoComision;
 import model.exceptions.EFechaNoValida;
 import model.exceptions.ESaldoNoValido;
-import controller.Lista;
 
 public class PanInsertarCuentaAhorro<E> extends JPanel {
 
@@ -104,65 +102,68 @@ public class PanInsertarCuentaAhorro<E> extends JPanel {
 	// Añadir el listener al botón para insertar la cuenta
 	private void addListeners() {
 		btnInsertar.addActionListener(new ActionListener() {
-	        public void actionPerformed(ActionEvent e) {
-	            try {
-	                // Obtener los datos ingresados
-	                Integer numero = Integer.parseInt(tfNumero.getText());
-	                String titular = tfTitular.getText();
-	                Double saldo = Double.parseDouble(tfSaldo.getText());
-	                LocalDate fecha = LocalDate.parse(tfFecha.getText(), DateTimeFormatter.ISO_LOCAL_DATE);
-	                Double ahorros = Double.parseDouble(tfAhorros.getText());
-	                Double interesAnual = Double.parseDouble(tfInteresAnual.getText());
+			public void actionPerformed(ActionEvent e) {
+				try {
+					// Obtener los datos ingresados
+					Integer numero = Integer.parseInt(tfNumero.getText());
+					String titular = tfTitular.getText();
+					Double saldo = Double.parseDouble(tfSaldo.getText());
+					LocalDate fecha = LocalDate.parse(tfFecha.getText(), DateTimeFormatter.ISO_LOCAL_DATE);
+					Double ahorros = Double.parseDouble(tfAhorros.getText());
+					Double interesAnual = Double.parseDouble(tfInteresAnual.getText());
 
-	                // Lanzar exepcion de saldo si es negativo
-	                if(saldo < 0) {
-	                	throw new ESaldoNoValido("El saldo no debe ser negativo");
-	                } else if(saldo < Cuenta.saldoMinimo) {
-	                	throw new ESaldoNoValido("El saldo no debe ser menor a " + Cuenta.saldoMinimo);
+					// Lanzar exepcion de saldo si es negativo
+					if (saldo < 0) {
+						throw new ESaldoNoValido("El saldo no debe ser negativo");
+					} else if (saldo < Cuenta.saldoMinimo) {
+						throw new ESaldoNoValido("El saldo no debe ser menor a " + Cuenta.saldoMinimo);
+					}
 
-	                }
-	                	
+					// Lanzar exepcion de fecha si es futura
+					if (CtrlCuentas.comprobarFechaFutura(fecha))
+						throw new EFechaNoValida();
 
-	                // Lanzar exepcion de fecha si es futura
-	                if(CtrlCuentas.comprobarFechaFutura(fecha)) 
-	                	throw new EFechaNoValida();
-	                
-	                
-	                // Crear una nueva cuenta de ahorro
-	                CuentaAhorro nuevaCuenta = new CuentaAhorro(numero, titular, saldo, saldo, fecha, interesAnual, ahorros);
+					// Crear una nueva cuenta de ahorro
+					CuentaAhorro nuevaCuenta = new CuentaAhorro(numero, titular, saldo, saldo, fecha, interesAnual,
+							ahorros);
 
-	                // Insertar la cuenta en la lista
-	                lista.insertarNodo((E) nuevaCuenta); 
+					// Insertar la cuenta en la lista
+					lista.insertarNodo((E) nuevaCuenta);
 
-	                CtrlCuentas ctrl = new CtrlCuentas("prueba.dat");
-	                
-	                // Guardar la lista de cuentas en el archivo
-	                ctrl.guardarEnFichero((Lista<Cuenta>) lista);
+					CtrlCuentas ctrl = new CtrlCuentas("prueba.dat");
 
-	                // Mostrar mensaje de éxito
-	                JOptionPane.showMessageDialog(PanInsertarCuentaAhorro.this, "Cuenta insertada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+					// Guardar la lista de cuentas en el archivo
+					ctrl.guardarEnFichero((Lista<Cuenta>) lista);
 
-	                // Limpiar los campos después de la inserción
-	                limpiarCampos();
-	            } catch (NumberFormatException ex) {
-	                JOptionPane.showMessageDialog(PanInsertarCuentaAhorro.this, "Por favor, ingrese valores válidos.", "Error", JOptionPane.ERROR_MESSAGE);
-	            } catch (ESaldoNoValido ex) {
-	                JOptionPane.showMessageDialog(PanInsertarCuentaAhorro.this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-	            
-	            } catch (DateTimeParseException ex) {
-	                JOptionPane.showMessageDialog(PanInsertarCuentaAhorro.this, "El formato de la fecha es incorrecto.", "Error", JOptionPane.ERROR_MESSAGE);
+					// Mostrar mensaje de éxito
+					JOptionPane.showMessageDialog(PanInsertarCuentaAhorro.this, "Cuenta insertada correctamente.",
+							"Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-	            
-	            }catch (EFechaNoValida ex) {
+					// Limpiar los campos después de la inserción
+					limpiarCampos();
+				} catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(PanInsertarCuentaAhorro.this, "Por favor, ingrese valores válidos.",
+							"Error", JOptionPane.ERROR_MESSAGE);
+				} catch (ESaldoNoValido ex) {
+					JOptionPane.showMessageDialog(PanInsertarCuentaAhorro.this, ex.getMessage(), "Error",
+							JOptionPane.ERROR_MESSAGE);
 
-	                JOptionPane.showMessageDialog(PanInsertarCuentaAhorro.this, "La fecha no debe ser futura.", "Error", JOptionPane.ERROR_MESSAGE);
+				} catch (DateTimeParseException ex) {
+					JOptionPane.showMessageDialog(PanInsertarCuentaAhorro.this, "El formato de la fecha es incorrecto.",
+							"Error", JOptionPane.ERROR_MESSAGE);
 
-	            } catch (Exception ex) {
+				} catch (EFechaNoValida ex) {
 
-	                JOptionPane.showMessageDialog(PanInsertarCuentaAhorro.this, "Error al insertar la cuenta.", "Error", JOptionPane.ERROR_MESSAGE);
-	            }
-	        }
-	    });
+					JOptionPane.showMessageDialog(PanInsertarCuentaAhorro.this, "La fecha no debe ser futura.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+
+				} catch (Exception ex) {
+
+					JOptionPane.showMessageDialog(PanInsertarCuentaAhorro.this, "Error al insertar la cuenta.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
 	}
 
 	// Limpiar los campos después de la inserción

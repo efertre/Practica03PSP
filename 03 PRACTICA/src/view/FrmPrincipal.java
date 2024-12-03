@@ -24,14 +24,13 @@ import model.exceptions.ESaldoNoValido;
 public class FrmPrincipal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel panPrincipal;
+	private JPanel panPrincipal, panJList, panVerUnoxUno;
 	
 	private String ruta = "prueba.dat";
 
 	private CtrlCuentas ctrl = new CtrlCuentas(ruta);
-	private Lista<Cuenta> cuentas = new Lista<>() ;
+	private Lista<Cuenta> cuentas;
 	
-	private PanelJLista panJList;
 	private JMenu mnOpciones, mnVer, mnInsertar;
 	private JMenuBar mnPrincipal;
 	private JMenuItem mntmVaciarLista, mntmCargarTest, mntmCargarDatos, mntmGuardarDatos, mntmListar, mntmUnoXUno, mntmNewCtaAhorro,  mntmNewCtaCorriente;
@@ -42,34 +41,30 @@ public class FrmPrincipal extends JFrame {
 	 * Crea el frame
 	 */
 	public FrmPrincipal() {
-		
-		
-		
-		
+		cuentas = ctrl.cargarDesdeFichero();
+	    if (cuentas == null) {
+	        cuentas = new Lista<>();
+	    }
+			
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 464, 380);
 		
 		setResizable(false);
 		setLocationRelativeTo(null);	
 		setTitle("Práctica 03 - Ema y Paula");
 		
-
+		
 		addComponents();
 		addListeners();
 		
-
 		
 		
 	}
 
 
 
-
 	private void addComponents() {
 		
-		if(cuentas == null) {
-		cuentas = ctrl.cargarDesdeFichero();
-		}
 		
 		panPrincipal = new JPanel();
 		panPrincipal.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -107,6 +102,7 @@ public class FrmPrincipal extends JFrame {
 		
 		mntmUnoXUno = new JMenuItem("Visualizar uno a uno");
 
+
 		mnVer = new JMenu("Ver");
 		mnVer.setHorizontalAlignment(SwingConstants.CENTER);
 		
@@ -139,6 +135,7 @@ public class FrmPrincipal extends JFrame {
 		
 
 		panPrincipal.add(panJList, BorderLayout.CENTER);
+		panJList.setLayout(new BorderLayout(0, 0));
 		
 		
 
@@ -148,8 +145,8 @@ public class FrmPrincipal extends JFrame {
 		
 		mntmVaciarLista.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cuentas = null;
-				panJList.actualizarLista(cuentas);
+				cuentas = new Lista<>(); // Lista vacía
+				((PanelJLista) panJList).actualizarLista(cuentas);
 			}
 		});
 		
@@ -160,17 +157,15 @@ public class FrmPrincipal extends JFrame {
 				
 				
 				
-				
-				panJList.actualizarLista(cuentas);
+				((PanelJLista) panJList).actualizarLista(cuentas);
 				
 			}
 		});
 		
 		
-		
 		mntmGuardarDatos.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		        if (cuentas == null) { // Verificar si la lista está vacía
+		        if (cuentas == null ) {
 		            JOptionPane.showMessageDialog(
 		                FrmPrincipal.this,
 		                "No hay cuentas en la lista para guardar.",
@@ -179,17 +174,8 @@ public class FrmPrincipal extends JFrame {
 		            );
 		            return;
 		        }
-		        
-		        try {
-					cuentas.insertarNodo(new Cuenta(1, "Prueba", 200.0, 100.0, LocalDate.now()));
-				} catch (ESaldoNoValido e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 
-		        // Intentar guardar la lista en el archivo
-				ctrl.guardarEnFichero(cuentas);
-
+		        ctrl.guardarEnFichero(cuentas);
 				JOptionPane.showMessageDialog(
 				    FrmPrincipal.this,
 				    "Los datos se han guardado correctamente en el archivo.",
@@ -200,23 +186,6 @@ public class FrmPrincipal extends JFrame {
 		});
 		
 		
-		
-		mntmListar.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		    	
-		    	
-		        panJList = new PanelJLista(cuentas);
-
-
-		        // Añadir el nuevo panel
-		        panPrincipal.add(panJList, BorderLayout.CENTER);
-
-		        // Actualizar la interfaz
-		        panPrincipal.revalidate();
-		        panPrincipal.repaint();
-		    }
-		});
-		
 		mntmCargarTest.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		    	
@@ -224,25 +193,59 @@ public class FrmPrincipal extends JFrame {
 		        try {
 					
 		        	cuentas = ctrl.cargarTest();
-					panJList.actualizarLista(cuentas);
+					((PanelJLista) panJList).actualizarLista(cuentas);
 					
+					// Si el panel de uno por uno ya existe, actualízalo con la nueva lista
+		            if (panVerUnoxUno instanceof PanVerUnoxUno) {
+		                ((PanVerUnoxUno) panVerUnoxUno).actualizarLista(cuentas);
+		            }
 				} catch (ESaldoNoValido e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 		    }
 		});
+			
 		
+		mntmUnoXUno.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        panVerUnoxUno = new PanVerUnoxUno(cuentas);
+		        cambiarPanel(panVerUnoxUno);
+		    }
+		});
+
+		mntmListar.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        panJList = new PanelJLista(cuentas);
+		        cambiarPanel(panJList);
+		    }
+		});
+
+
 		mntmNewCtaAhorro.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        // TODO: Implementar creación de nueva cuenta de ahorro
+		    }
 		});
-		
+
 		mntmNewCtaCorriente.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        // TODO: Implementar creación de nueva cuenta corriente
+		    }
 		});
+
 			
 	}
+	private void cambiarPanel(JPanel nuevoPanel) {
+	    panPrincipal.removeAll(); // Remueve todos los componentes actuales
+	    panPrincipal.add(mnPrincipal, BorderLayout.NORTH); // Vuelve a añadir la barra de menú
+	    panPrincipal.add(nuevoPanel, BorderLayout.CENTER); // Añade el nuevo panel
+	    panPrincipal.revalidate();
+	    panPrincipal.repaint();
+	}
+	
+
+
+
 
 }

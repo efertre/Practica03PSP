@@ -7,6 +7,9 @@ import javax.swing.JScrollPane;
 
 import controller.Lista;
 import model.Cuenta;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.SwingConstants;
 
 
 public class PanelJLista extends JPanel {
@@ -26,9 +29,14 @@ public class PanelJLista extends JPanel {
         // Configurar el JScrollPane y JList
         actualizarLista(lista);
         scrollPane.setViewportView(jList1);
-        scrollPane.setBounds(54, 53, 224, 175);
+        scrollPane.setBounds(0, 19, 450, 281);
 
         add(scrollPane); // Añadir JScrollPane al panel
+        
+        JLabel lblNewLabel = new JLabel("LISTADO");
+        lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        scrollPane.setColumnHeaderView(lblNewLabel);
+        lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 
         
     }
@@ -51,5 +59,4 @@ public class PanelJLista extends JPanel {
 	    }
 	    return modelo;
 	}
-
 }

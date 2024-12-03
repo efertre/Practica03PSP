@@ -16,7 +16,6 @@ import controller.Lista;
 import model.Cuenta;
 import model.CuentaAhorro;
 import model.CuentaCorriente;
-import model.exceptions.ESaldoNoValido;
 
 public class PanVerUnoxUno<E> extends JPanel {
 
@@ -31,7 +30,7 @@ public class PanVerUnoxUno<E> extends JPanel {
 
 	public PanVerUnoxUno(Lista<E> lista) {
 		this.lista = lista;
-		this.nodoActual = lista.inicio; // Comenzamos en el inicio de la lista
+		this.nodoActual = lista.getInicio(); // Comenzamos en el inicio de la lista
 		setLayout(null);
 
 		addComponents();
@@ -123,8 +122,8 @@ public class PanVerUnoxUno<E> extends JPanel {
 
 		btnAnterior.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (nodoActual != null && nodoActual != lista.inicio) {
-					Lista<E>.Node<E> anterior = lista.inicio;
+				if (nodoActual != null && nodoActual != lista.getInicio()) {
+					Lista<E>.Node<E> anterior = lista.getInicio();
 					while (anterior.getSiguiente() != nodoActual) {
 						anterior = anterior.getSiguiente();
 					}
@@ -144,36 +143,37 @@ public class PanVerUnoxUno<E> extends JPanel {
 		});
 
 		btnCalcular.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		        if (nodoActual != null) {
-		            Cuenta cuenta = (Cuenta) nodoActual.getPrincipal(); // Obtener la cuenta actual
-		            // Comprobar si ha pasado un mes o un año
+			public void actionPerformed(ActionEvent e) {
+				if (nodoActual != null) {
+					Cuenta cuenta = (Cuenta) nodoActual.getPrincipal(); // Obtener la cuenta actual
+					// Comprobar si ha pasado un mes o un año
 					if (debeCalcular(cuenta)) {
-					    // Llamar al método que realiza el cálculo de saldo
-					    cuenta.calcularSaldo(cuenta);
+						// Llamar al método que realiza el cálculo de saldo
+						cuenta.calcularSaldo(cuenta);
 
-					    // Si el saldo es válido, actualizar el saldo en la UI o la lista
-					    actualizarSaldo(cuenta);
+						// Si el saldo es válido, actualizar el saldo en la UI o la lista
+						actualizarSaldo(cuenta);
 
-					    CtrlCuentas ctrl = new CtrlCuentas("prueba.dat");
-					    ctrl.guardarEnFichero((Lista<Cuenta>) lista);
-					    
+						CtrlCuentas ctrl = new CtrlCuentas("prueba.dat");
+						ctrl.guardarEnFichero((Lista<Cuenta>) lista);
+
 					}
-		        }
-		    }
+				}
+			}
 		});
 
 	}
+
 	private boolean debeCalcular(Cuenta cuenta) {
-	    LocalDate hoy = LocalDate.now();
-	    boolean esDiaDeMes = cuenta.getFechaApertura().getDayOfMonth() == hoy.getDayOfMonth();
-	    boolean esDiaDeAnio = esDiaDeMes && cuenta.getFechaApertura().getMonthValue() == hoy.getMonthValue();
-	    
-	    return esDiaDeMes || esDiaDeAnio;
+		LocalDate hoy = LocalDate.now();
+		boolean esDiaDeMes = cuenta.getFechaApertura().getDayOfMonth() == hoy.getDayOfMonth();
+		boolean esDiaDeAnio = esDiaDeMes && cuenta.getFechaApertura().getMonthValue() == hoy.getMonthValue();
+
+		return esDiaDeMes || esDiaDeAnio;
 	}
 
 	public void actualizarSaldo(Cuenta cuenta) {
-	    tfSaldo.setText(String.valueOf(cuenta.getSaldo()));
+		tfSaldo.setText(String.valueOf(cuenta.getSaldo()));
 	}
 
 	private void actualizarVista() {
@@ -193,25 +193,25 @@ public class PanVerUnoxUno<E> extends JPanel {
 		tfTitular.setText(cuenta.getTitular());
 		tfSaldo.setText(String.valueOf(cuenta.getSaldo()));
 		tfFecha.setText(cuenta.getFechaApertura().toString());
-		
-		if(cuenta instanceof CuentaCorriente) {
-			lblComMant.setText("Comisión de Mantenimiento:"); 
-			lblTipo.setText("Tipo de Comisión:"); 
-			
-			tfComMant.setText(((CuentaCorriente)cuenta).getComisionMantenimiento().toString());
-			tfTipo.setText(((CuentaCorriente)cuenta).getTipo().toString());
+
+		if (cuenta instanceof CuentaCorriente) {
+			lblComMant.setText("Comisión de Mantenimiento:");
+			lblTipo.setText("Tipo de Comisión:");
+
+			tfComMant.setText(((CuentaCorriente) cuenta).getComisionMantenimiento().toString());
+			tfTipo.setText(((CuentaCorriente) cuenta).getTipo().toString());
 		}
-		
-		if(cuenta instanceof CuentaAhorro) {
-			lblComMant.setText("Ahorros:"); 
-			lblTipo.setText("Interés anual:"); 
-			
-			tfComMant.setText(((CuentaAhorro)cuenta).getAhorros().toString());
-			tfTipo.setText(((CuentaAhorro)cuenta).getInteresAnual().toString());
+
+		if (cuenta instanceof CuentaAhorro) {
+			lblComMant.setText("Ahorros:");
+			lblTipo.setText("Interés anual:");
+
+			tfComMant.setText(((CuentaAhorro) cuenta).getAhorros().toString());
+			tfTipo.setText(((CuentaAhorro) cuenta).getInteresAnual().toString());
 		}
 
 		// Habilita/Deshabilita botones según sea necesario
-		btnAnterior.setEnabled(lista.inicio != nodoActual);
+		btnAnterior.setEnabled(lista.getInicio() != nodoActual);
 		btnSiguiente.setEnabled(nodoActual.getSiguiente() != null);
 	}
 
@@ -223,10 +223,10 @@ public class PanVerUnoxUno<E> extends JPanel {
 		tfComMant.setText("");
 		tfTipo.setText("");
 	}
-	
+
 	public void actualizarLista(Lista<Cuenta> nuevaLista) {
-	    this.lista = (Lista<E>) nuevaLista;
-	    this.nodoActual = (nuevaLista != null) ? (Lista<E>.Node<E>) nuevaLista.inicio : null;
-	    actualizarVista(); // Muestra la primera cuenta de la nueva lista
+		this.lista = (Lista<E>) nuevaLista;
+		this.nodoActual = (nuevaLista != null) ? (Lista<E>.Node<E>) nuevaLista.getInicio() : null;
+		actualizarVista(); // Muestra la primera cuenta de la nueva lista
 	}
 }

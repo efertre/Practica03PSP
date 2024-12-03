@@ -3,18 +3,15 @@ package controller;
 import java.io.Serializable;
 
 public class Lista<E> implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	public Node<E> inicio;
+    private static final long serialVersionUID = 1L; 
+	private Node<E> inicio;
 
 	public Lista() {
-		this.inicio = null;
+		this.setInicio(null);
 	}
 
 	public void mostrarLista() {
-		Node<E> aux = this.inicio;
+		Node<E> aux = this.getInicio();
 		while (aux != null) {
 			System.out.println(aux.getPrincipal().toString());
 			aux = aux.getSiguiente();
@@ -23,11 +20,24 @@ public class Lista<E> implements Serializable {
 
 	public void insertarNodo(E p) {
 		Node<E> nuevoNodo = new Node(p);
-		nuevoNodo.setSiguiente(this.inicio);
-		this.inicio = nuevoNodo;
+		nuevoNodo.setSiguiente(this.getInicio());
+		this.setInicio(nuevoNodo);
+	}
+	
+	public Node<E> getNodoInicio(){
+		return getInicio();
+	}
+
+	public Node<E> getInicio() {
+		return inicio;
+	}
+
+	public void setInicio(Node<E> inicio) {
+		this.inicio = inicio;
 	}
 
 	public class Node<E> implements Serializable {
+	    private static final long serialVersionUID = 1L; 
 		private Node<E> siguiente;
 		E principal;
 

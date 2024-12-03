@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -17,6 +18,7 @@ import model.Cuenta;
 import model.CuentaAhorro;
 import model.CuentaCorriente;
 import model.TipoComision;
+import model.exceptions.EFechaNoValida;
 import model.exceptions.ESaldoNoValido;
 import controller.Lista;
 
@@ -112,14 +114,29 @@ public class PanInsertarCuentaAhorro<E> extends JPanel {
 	                Double ahorros = Double.parseDouble(tfAhorros.getText());
 	                Double interesAnual = Double.parseDouble(tfInteresAnual.getText());
 
+	                // Lanzar exepcion de saldo si es negativo
+	                if(saldo < 0) {
+	                	throw new ESaldoNoValido("El saldo no debe ser negativo");
+	                } else if(saldo < Cuenta.saldoMinimo) {
+	                	throw new ESaldoNoValido("El saldo no debe ser menor a " + Cuenta.saldoMinimo);
+
+	                }
+	                	
+
+	                // Lanzar exepcion de fecha si es futura
+	                if(CtrlCuentas.comprobarFechaFutura(fecha)) 
+	                	throw new EFechaNoValida();
+	                
+	                
 	                // Crear una nueva cuenta de ahorro
 	                CuentaAhorro nuevaCuenta = new CuentaAhorro(numero, titular, saldo, saldo, fecha, interesAnual, ahorros);
 
 	                // Insertar la cuenta en la lista
 	                lista.insertarNodo((E) nuevaCuenta); 
 
-	                // Guardar la lista de cuentas en el archivo
 	                CtrlCuentas ctrl = new CtrlCuentas("prueba.dat");
+	                
+	                // Guardar la lista de cuentas en el archivo
 	                ctrl.guardarEnFichero((Lista<Cuenta>) lista);
 
 	                // Mostrar mensaje de éxito
@@ -130,8 +147,18 @@ public class PanInsertarCuentaAhorro<E> extends JPanel {
 	            } catch (NumberFormatException ex) {
 	                JOptionPane.showMessageDialog(PanInsertarCuentaAhorro.this, "Por favor, ingrese valores válidos.", "Error", JOptionPane.ERROR_MESSAGE);
 	            } catch (ESaldoNoValido ex) {
-	                JOptionPane.showMessageDialog(PanInsertarCuentaAhorro.this, "El saldo no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
+	                JOptionPane.showMessageDialog(PanInsertarCuentaAhorro.this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+	            
+	            } catch (DateTimeParseException ex) {
+	                JOptionPane.showMessageDialog(PanInsertarCuentaAhorro.this, "El formato de la fecha es incorrecto.", "Error", JOptionPane.ERROR_MESSAGE);
+
+	            
+	            }catch (EFechaNoValida ex) {
+
+	                JOptionPane.showMessageDialog(PanInsertarCuentaAhorro.this, "La fecha no debe ser futura.", "Error", JOptionPane.ERROR_MESSAGE);
+
 	            } catch (Exception ex) {
+
 	                JOptionPane.showMessageDialog(PanInsertarCuentaAhorro.this, "Error al insertar la cuenta.", "Error", JOptionPane.ERROR_MESSAGE);
 	            }
 	        }

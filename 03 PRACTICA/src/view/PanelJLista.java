@@ -14,7 +14,8 @@ import javax.swing.SwingConstants;
 
 public class PanelJLista extends JPanel {
 
-    private JScrollPane scrollPane;
+    private static final long serialVersionUID = 1L;
+	private JScrollPane scrollPane;
     private JList<String> jList1;
 
     public PanelJLista(Lista<Cuenta> lista) {
@@ -49,7 +50,7 @@ public class PanelJLista extends JPanel {
 	    DefaultListModel<String> modelo = new DefaultListModel<>();
 	    if(lista != null) {
 	    // Nodo auxiliar para recorrer la lista personalizada
-	    Lista<Cuenta>.Node<Cuenta> nodoActual = lista.inicio;
+	    Lista<Cuenta>.Node<Cuenta> nodoActual = lista.getInicio();
 	    while (nodoActual != null) {
 	        Cuenta cuenta = nodoActual.getPrincipal(); // Obtiene el objeto Cuenta del nodo
 	        String infoObjeto = "Información de la cuenta: " + cuenta.toString(); // Formatea la información

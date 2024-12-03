@@ -38,7 +38,9 @@ public class CtrlCuentas {
 	    } catch (FileNotFoundException e) {
 	        System.err.println("El archivo no se pudo encontrar.");
 	    } catch (IOException e) {
-	        System.err.println("Error al leer del archivo: " + e.getMessage());
+	        e.printStackTrace();
+
+	        //System.err.println("Error al leer del archivo: " + e.getStackTrace());
 	    } catch (ClassNotFoundException e) {
 	        System.err.println("Error: Clase no encontrada al deserializar.");
 	    }
@@ -85,6 +87,10 @@ public class CtrlCuentas {
 	    return lista;
 	}
 	
+	// Metodo estatico que comprueba si una fecha es futura (devuelve false si no)s
+	public static boolean comprobarFechaFutura(LocalDate fecha) {
+	    return LocalDate.now().isBefore(fecha);
+	}
 	
 
 }

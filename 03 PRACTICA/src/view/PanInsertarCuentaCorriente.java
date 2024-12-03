@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -16,6 +17,7 @@ import controller.CtrlCuentas;
 import model.Cuenta;
 import model.CuentaCorriente;
 import model.TipoComision;
+import model.exceptions.EFechaNoValida;
 import model.exceptions.ESaldoNoValido;
 import controller.Lista;
 
@@ -125,7 +127,20 @@ public class PanInsertarCuentaCorriente<E> extends JPanel {
 					                                  "Error", JOptionPane.ERROR_MESSAGE);
 					    return;  // Salir del método si hay un error
 					}
+					
+					// Lanzar exepcion de saldo si es negativo
+                    if(saldo < 0) {
+                        throw new ESaldoNoValido("El saldo no debe ser negativo");
+                    } else if(saldo < Cuenta.saldoMinimo) {
+                        throw new ESaldoNoValido("El saldo no debe ser menor a " + Cuenta.saldoMinimo);
 
+                    }
+
+
+                    // Lanzar exepcion de fecha si es futura
+                    if(CtrlCuentas.comprobarFechaFutura(fecha)) 
+                        throw new EFechaNoValida();
+					
 
 					// Crear una nueva cuenta corriente
 					CuentaCorriente nuevaCuenta = new CuentaCorriente(numero, titular, saldo, saldo, fecha, comisionMantenimiento, tipoComision);
@@ -143,12 +158,22 @@ public class PanInsertarCuentaCorriente<E> extends JPanel {
 					// Limpiar los campos después de la inserción
 					limpiarCampos();
 				} catch (NumberFormatException ex) {
-					JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this, "Por favor, ingrese valores válidos.", "Error", JOptionPane.ERROR_MESSAGE);
-				} catch (ESaldoNoValido ex) {
-					JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this, "El saldo no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
-				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this, "Error al insertar la cuenta.", "Error", JOptionPane.ERROR_MESSAGE);
-				}
+                    JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this, "Por favor, ingrese valores válidos.", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (ESaldoNoValido ex) {
+                    JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
+                } catch (DateTimeParseException ex) {
+                    JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this, "El formato de la fecha es incorrecto.", "Error", JOptionPane.ERROR_MESSAGE);
+
+
+                }catch (EFechaNoValida ex) {
+
+                    JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this, "La fecha no debe ser futura.", "Error", JOptionPane.ERROR_MESSAGE);
+
+                } catch (Exception ex) {
+
+                    JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this, "Error al insertar la cuenta.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
 			}
 		});
 	}

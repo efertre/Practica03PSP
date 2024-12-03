@@ -16,14 +16,14 @@ public class Cuenta implements FechaCalculable, Serializable {
     private Integer numero;
     private transient String titular;
     private Double saldo;
-    private Double saldoMinimo;
+    public static Double saldoMinimo = 350.0;
     private LocalDate fechaApertura;
 
     public Cuenta(Integer numero, String titular, Double saldo, Double saldoMinimo, LocalDate fechaApertura)
             throws ESaldoNoValido {
         setNumero(numero);
         setTitular(titular != null && !titular.isEmpty() ? titular : "Desconocido");
-        setSaldoMinimo(saldoMinimo);
+        
         setSaldo(saldo);
         setFechaApertura(fechaApertura != null ? fechaApertura : LocalDate.now());
     }
@@ -58,13 +58,7 @@ public class Cuenta implements FechaCalculable, Serializable {
         this.saldo = saldo;
     }
 
-    public Double getSaldoMinimo() {
-        return saldoMinimo;
-    }
-
-    public void setSaldoMinimo(double saldoMinimo) {
-        this.saldoMinimo = saldoMinimo;
-    }
+    
 
     public LocalDate getFechaApertura() {
         return fechaApertura;

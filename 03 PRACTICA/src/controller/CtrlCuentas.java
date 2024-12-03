@@ -85,6 +85,11 @@ public class CtrlCuentas {
 	    return lista;
 	}
 	
+	// Metodo estatico que comprueba si una fecha es futura (devuelve false si no)s
+    public static boolean comprobarFechaFutura(LocalDate fecha) {
+        return LocalDate.now().isBefore(fecha);
+    }
+	
 	
 
 }

@@ -29,7 +29,7 @@ public class Lista<E> implements Serializable {
         nuevoNodo.setSiguiente(this.getInicio());
         this.setInicio(nuevoNodo);
     }
-    
+    	
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject(); // Serializa los campos no transitorios.
         Node<E> current = inicio;
@@ -71,7 +71,7 @@ public class Lista<E> implements Serializable {
     }
 
     public class Node<E> implements Serializable {
-        private static final long serialVersionUID = 1L; 
+        private static final long serialVersionUID = 2L; 
         private Node<E> siguiente;
         E principal;
 

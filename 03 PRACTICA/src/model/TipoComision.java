@@ -7,7 +7,7 @@ public enum TipoComision {
     Transferencias(0.05),
     Descubierto(0.03),
     Cambio_Divisas(0.025),
-    Cancelacion(0.018),
+    Cancelacion(0.018), 
     Tarjeta_Regal(0.012);
 
     private final double interes;

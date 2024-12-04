@@ -58,7 +58,7 @@ public class PanInsertarCuentaAhorro<E> extends JPanel {
 
 		lblFecha = new JLabel("Fecha de apertura (yyyy-MM-dd):");
 		lblFecha.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblFecha.setBounds(-4, 129, 203, 16);
+		lblFecha.setBounds(-51, 129, 250, 16);
 		add(lblFecha);
 
 		lblAhorros = new JLabel("Ahorros:");

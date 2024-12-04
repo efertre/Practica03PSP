@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -14,25 +15,24 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import controller.CtrlCuentas;
+import controller.Lista;
 import model.Cuenta;
 import model.CuentaCorriente;
 import model.TipoComision;
 import model.exceptions.EFechaNoValida;
 import model.exceptions.ESaldoNoValido;
-import controller.Lista;
 
 public class PanInsertarCuentaCorriente<E> extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
 	// Campos de entrada
-	private JTextField tfNumero, tfTitular, tfSaldo, tfFecha, tfComMant, tfTipo;
+	private JTextField tfNumero, tfTitular, tfSaldo, tfFecha, tfComMant;
 	private JLabel lblTitular, lblNumero, lblSaldo, lblFecha, lblComMant, lblTipo;
 	private JButton btnInsertar;
-
+	private JComboBox<TipoComision> cbTipo;
 	private Lista<E> lista; // Lista personalizada
-	private CtrlCuentas ctrl ;
-	
+	private CtrlCuentas ctrl;
 
 	public PanInsertarCuentaCorriente(Lista<E> lista) {
 		ctrl = new CtrlCuentas("prueba.dat");
@@ -57,9 +57,9 @@ public class PanInsertarCuentaCorriente<E> extends JPanel {
 		lblSaldo.setBounds(123, 96, 76, 16);
 		add(lblSaldo);
 
-		lblFecha = new JLabel("Fecha de apertura (yyyy-MM-dd):");
+		lblFecha = new JLabel("Fecha de apertura (yyyy-mm-dd):");
 		lblFecha.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblFecha.setBounds(-4, 129, 203, 16);
+		lblFecha.setBounds(-15, 129, 214, 16);
 		add(lblFecha);
 
 		lblComMant = new JLabel("Comisión de Mantenimiento:");
@@ -86,6 +86,7 @@ public class PanInsertarCuentaCorriente<E> extends JPanel {
 		add(tfSaldo);
 
 		tfFecha = new JTextField();
+
 		tfFecha.setBounds(209, 125, 139, 26);
 		add(tfFecha);
 
@@ -93,14 +94,15 @@ public class PanInsertarCuentaCorriente<E> extends JPanel {
 		tfComMant.setBounds(209, 163, 139, 26);
 		add(tfComMant);
 
-		tfTipo = new JTextField();
-		tfTipo.setBounds(209, 201, 139, 26);
-		add(tfTipo);
-
 		// Botón Insertar
 		btnInsertar = new JButton("Insertar");
 		btnInsertar.setBounds(183, 261, 87, 29);
 		add(btnInsertar);
+
+		cbTipo = new JComboBox<>(TipoComision.values());
+		cbTipo.setBounds(211, 201, 137, 27);
+		add(cbTipo);
+
 	}
 
 	// Añadir el listener al botón para insertar la cuenta
@@ -115,9 +117,6 @@ public class PanInsertarCuentaCorriente<E> extends JPanel {
 					LocalDate fecha = LocalDate.parse(tfFecha.getText(), DateTimeFormatter.ISO_LOCAL_DATE);
 					Double comisionMantenimiento = Double.parseDouble(tfComMant.getText());
 
-					// Obtener el texto del JTextField
-					String tipoComisionTexto = tfTipo.getText();
-
 					// Lanzar exepcion de saldo si es negativo
 					if (saldo < 0) {
 						throw new ESaldoNoValido("El saldo no debe ser negativo");
@@ -130,18 +129,7 @@ public class PanInsertarCuentaCorriente<E> extends JPanel {
 					if (CtrlCuentas.comprobarFechaFutura(fecha))
 						throw new EFechaNoValida();
 
-					tipoComisionTexto = tipoComisionTexto.substring(0, 1).toUpperCase()
-							+ tipoComisionTexto.substring(1).toLowerCase();
-
-					TipoComision tipoComision = null;
-					try {
-						tipoComision = TipoComision.valueOf(tipoComisionTexto); // Ahora debería coincidir con el enum
-					} catch (IllegalArgumentException ex) {
-						JOptionPane.showMessageDialog(PanInsertarCuentaCorriente.this,
-								"Tipo de comisión no válido: '" + tipoComisionTexto + "'", "Error",
-								JOptionPane.ERROR_MESSAGE);
-						return; // Salir del método si hay un error
-					}
+					TipoComision tipoComision = (TipoComision) cbTipo.getSelectedItem();
 
 					// Lanzar exepcion de saldo si es negativo
 					if (saldo < 0) {
@@ -163,7 +151,7 @@ public class PanInsertarCuentaCorriente<E> extends JPanel {
 					lista.insertarNodo((E) nuevaCuenta);
 
 					// Guardar la lista de cuentas en el archivo
-					
+
 					ctrl.guardarEnFichero((Lista<Cuenta>) lista);
 
 					// Mostrar mensaje de éxito
@@ -196,6 +184,7 @@ public class PanInsertarCuentaCorriente<E> extends JPanel {
 			}
 
 		});
+
 	}
 
 	// Limpiar los campos después de la inserción
@@ -205,6 +194,5 @@ public class PanInsertarCuentaCorriente<E> extends JPanel {
 		tfSaldo.setText("");
 		tfFecha.setText("");
 		tfComMant.setText("");
-		tfTipo.setText("");
 	}
 }

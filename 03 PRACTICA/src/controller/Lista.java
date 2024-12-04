@@ -32,32 +32,35 @@ public class Lista<E> implements Serializable {
         this.setInicio(nuevoNodo);
     }
     	
-    private void writeObject(ObjectOutputStream out) throws IOException {
-        out.defaultWriteObject(); // Serializa los campos no transitorios.
-        Node<E> current = inicio;
-        while (current != null) {
-            out.writeObject(current.getPrincipal()); // Serializa solo el valor.
-            current = current.getSiguiente();
+    private void writeObject(ObjectOutputStream salida) throws IOException {
+        salida.defaultWriteObject(); // Serializa los campos no transitorios (no transient).
+        Node<E> actual = inicio; // Empieza desde el nodo inicial de la lista.
+        while (actual != null) {
+            salida.writeObject(actual.getPrincipal()); // Escribe en el flujo el valor del nodo actual (SOLO SERIALIZA EL VALOR).
+            actual = actual.getSiguiente(); // Avanza al siguiente nodo en la lista.
         }
-        out.writeObject(null); // Señal de fin de lista.
+        salida.writeObject(null); // Escribe un valor nulo como marcador de fin de lista.
     }
 
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject(); // Deserializa los campos no transitorios.
-        Node<E> previous = null;
-        while (true) {
+    private void readObject(ObjectInputStream entrada) throws IOException, ClassNotFoundException {
+        entrada.defaultReadObject(); // Deserializa los campos no transitorios definidos en la clase.
+
+        Node<E> anterior = null; // Variable que rastrea el último nodo deserializado.
+        while (true) { // Ciclo infinito que se rompe al encontrar el marcador de fin de lista.
             @SuppressWarnings("unchecked")
-            E value = (E) in.readObject();
-            if (value == null) break; // Fin de lista.
-            Node<E> currentNode = new Node<>(value);
-            if (previous == null) {
-                inicio = currentNode;
+            E valor = (E) entrada.readObject(); // Lee el siguiente objeto del flujo de entrada.
+            if (valor == null) break; // Si el objeto es nulo, se alcanzó el final de la lista.
+
+            Node<E> nodoActual = new Node<>(valor); // Crea un nuevo nodo con el valor leído.
+            if (anterior == null) { 
+                inicio = nodoActual; // Si es el primer nodo, lo asigna como inicio de la lista.
             } else {
-                previous.setSiguiente(currentNode);
+                anterior.setSiguiente(nodoActual); // Conecta el nodo anterior con el nodo actual.
             }
-            previous = currentNode;
+            anterior = nodoActual; // Actualiza el nodo anterior al nodo actual.
         }
     }
+
 
     
     public Node<E> getNodoInicio() {

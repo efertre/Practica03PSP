@@ -30,8 +30,11 @@ public class PanInsertarCuentaAhorro<E> extends JPanel {
 	private JButton btnInsertar;
 
 	private Lista<E> lista; // Lista personalizada
+	
+	private CtrlCuentas ctrl;
 
 	public PanInsertarCuentaAhorro(Lista<E> lista) {
+		ctrl = new CtrlCuentas("prueba.dat");
 		this.lista = lista;
 		setLayout(null);
 		addComponents();
@@ -130,7 +133,6 @@ public class PanInsertarCuentaAhorro<E> extends JPanel {
 					// Insertar la cuenta en la lista
 					lista.insertarNodo((E) nuevaCuenta);
 
-					CtrlCuentas ctrl = new CtrlCuentas("prueba.dat");
 
 					// Guardar la lista de cuentas en el archivo
 					ctrl.guardarEnFichero((Lista<Cuenta>) lista);

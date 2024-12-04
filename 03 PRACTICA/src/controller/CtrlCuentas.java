@@ -36,9 +36,7 @@ public class CtrlCuentas {
 		} catch (FileNotFoundException e) {
 			System.err.println("El archivo no se pudo encontrar.");
 		} catch (IOException e) {
-			e.printStackTrace();
-
-			// System.err.println("Error al leer del archivo: " + e.getStackTrace());
+			System.err.println("Error al leer del archivo: " + e.getMessage());
 		} catch (ClassNotFoundException e) {
 			System.err.println("Error: Clase no encontrada al deserializar.");
 		}

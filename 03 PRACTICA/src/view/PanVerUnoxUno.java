@@ -170,7 +170,6 @@ public class PanVerUnoxUno<E> extends JPanel {
 
 	private boolean debeCalcular(Cuenta cuenta) {
 		LocalDate hoy = LocalDate.now();
-
 		 System.out.println("Fecha actual: " + hoy); // Depura la fecha actual
 		    System.out.println("Fecha de apertura: " + cuenta.getFechaApertura()); // Depura la fecha de apertura
 
@@ -182,7 +181,6 @@ public class PanVerUnoxUno<E> extends JPanel {
 
 		return esDiaDeMes || esDiaDeAnio;
 	}
-
 
 	public void actualizarSaldo(Cuenta cuenta) {
 		tfSaldo.setText(String.format("%.2f",cuenta.getSaldo()));

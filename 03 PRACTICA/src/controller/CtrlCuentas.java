@@ -7,9 +7,18 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
+import controller.Lista.Node;
 import model.Cuenta;
 import model.CuentaAhorro;
 import model.CuentaCorriente;
@@ -126,7 +135,8 @@ public class CtrlCuentas {
 		}
 		return lista;
 	}
-
+	
+	// Genera un índice aleatorio según los valores guardados en el enum de TipoComision
 	private TipoComision generarTipoComisionAleatorio() {
 
 		TipoComision[] valores = TipoComision.values();
@@ -134,6 +144,29 @@ public class CtrlCuentas {
 		return valores[indiceAleatorio];
 
 	}
+	
+	
+
+	public ArrayList<Cuenta> convertirAListaArray(Lista<Cuenta> listaPersonalizada) {
+	    
+	    ArrayList<Cuenta> listaArray = new ArrayList<>();
+	    
+	    // Obtiene el primer nodo de la lista personalizada 
+	    Lista<Cuenta>.Node<Cuenta> current = listaPersonalizada.getNodoInicio();
+	    
+	    // Recorre la lista personalizada mientras el nodo actual no sea nulo (es decir, mientras haya elementos en la lista).
+	    while (current != null) {
+	        // Añade el objeto Cuenta al ArrayList.
+	        listaArray.add(current.getPrincipal());
+	        
+	        // Avanza al siguiente nodo de la lista personalizada.
+	        current = current.getSiguiente();
+	    }
+	    
+	    return listaArray;
+	}
+
+
 
 	public void calcularSaldo(Cuenta cuenta) {
 		LocalDate hoy = LocalDate.now();
@@ -166,4 +199,6 @@ public class CtrlCuentas {
 
 		}
 	}
+	
+	
 }

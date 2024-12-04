@@ -2,6 +2,9 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -154,19 +157,36 @@ public class FrmPrincipal extends JFrame {
 		});
 		
 		mntmCargar10K.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				cuentas = ctrl.generarCuentasAleatorias(cuentas, 10000);
+		    public void actionPerformed(ActionEvent e) {
+		        // Generar 10,000 cuentas aleatorias
+		        cuentas = ctrl.generarCuentasAleatorias(cuentas, 10000);
 
-				((PanVerUnoxUno) panVerUnoxUno).actualizarLista(cuentas);
+		        // Convertir la lista personalizada a ArrayList
+		        ArrayList<Cuenta> listaArray = ctrl.convertirAListaArray(cuentas);
 
-				// Si el panel de listado ya existe, actualízalo con la nueva lista
-				if (panJList instanceof PanelJLista) {
-					((PanelJLista) panJList).actualizarLista(cuentas);
-				}
-				
-			}
+		        // Medir el tiempo para ordenar la lista personalizada
+		        long inicioListaPersonalizada = System.nanoTime();
+		        cuentas.ordenarPorNumeroCuenta();; // Método para ordenar Lista
+		        long finListaPersonalizada = System.nanoTime();
+
+		        // Medir el tiempo para ordenar el ArrayList
+		        long inicioArrayList = System.nanoTime();
+		        Collections.sort(listaArray, Comparator.comparingInt(Cuenta::getNumero)); // Ordenar por número de cuenta
+		        long finArrayList = System.nanoTime();
+
+		        // Mostrar los tiempos en la consola o en una interfaz gráfica
+		        System.out.println("Tiempo para ordenar Lista personalizada: " + (finListaPersonalizada - inicioListaPersonalizada) + " ns");
+		        System.out.println("Tiempo para ordenar ArrayList: " + (finArrayList - inicioArrayList) + " ns");
+
+		        // Actualizar los paneles con la lista personalizada
+		        ((PanVerUnoxUno) panVerUnoxUno).actualizarLista(cuentas);
+
+		        if (panJList instanceof PanelJLista) {
+		            ((PanelJLista) panJList).actualizarLista(cuentas);
+		        }
+		    }
 		});
+
 		mntmGuardarDatos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (cuentas == null) {

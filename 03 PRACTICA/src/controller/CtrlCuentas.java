@@ -100,16 +100,18 @@ public class CtrlCuentas {
 	        
 	        double saldoMinimo = 350.0; // Definir un saldo mínimo válido
 	        double saldo = saldoMinimo + Math.random() * (10000 - saldoMinimo); // Saldo entre 350 y 10,000
-	        //LocalDate fechaApertura = LocalDate.now().minusDays((long) (Math.random() * 365 * 5)); // Fecha aleatoria en los últimos 5 años
-	     // Generar la fecha de apertura con el día 3
+//	        //LocalDate fechaApertura = LocalDate.now().minusDays((long) (Math.random() * 365 * 5)); // Fecha aleatoria en los últimos 5 años
+//	     // Generar la fecha de apertura con el día 3
 	        LocalDate fechaApertura = LocalDate.now()
 	            .minusYears((long) (Math.random() * 5)) // Año aleatorio dentro de los últimos 5 años
 	            .withMonth(1 + (int) (Math.random() * 12)) // Mes aleatorio entre 1 y 12
-	            .withDayOfMonth(3); // Día fijo 3
+	            .withDayOfMonth(4); // Día fijo 3
 
 	        
 	        // Generar aleatoriamente si será CuentaAhorro o CuentaCorriente
 	        boolean esCuentaAhorro = Math.random() < 0.5;
+	   
+	    	
 	        
 	        // Depuración de los valores generados
 	        System.out.println("Generando cuenta " + (i + 1) + ":");
@@ -122,8 +124,9 @@ public class CtrlCuentas {
 	        try {
 	            if (esCuentaAhorro) {
 	                // Atributos específicos de CuentaAhorro
-	                double interesAnual = 0.01 + Math.random() * 0.05; // Interés entre 1% y 5%
-	                double ahorros = 1000 + Math.random() * 9000; // Ahorros entre 1000 y 10000
+
+	            	double interesAnual = 0.02;
+	            	double ahorros = 2000;
 	                
 	                // Depuración de los atributos específicos de CuentaAhorro
 	                System.out.println("  Interés Anual (CuentaAhorro): " + interesAnual);
@@ -133,8 +136,10 @@ public class CtrlCuentas {
 	                lista.insertarNodo(cuentaAhorro);
 	            } else {
 	                // Atributos específicos de CuentaCorriente
+	            	
 	                double comisionMensual = 5 + Math.random() * 15; // Comisión entre 5 y 20
 	                TipoComision tipoComision = generarTipoComisionAleatorio(); // Selecciona un tipo aleatorio
+	            
 	                
 	                // Depuración de los atributos específicos de CuentaCorriente
 	                System.out.println("  Comisión Mensual (CuentaCorriente): " + comisionMensual);
@@ -161,30 +166,24 @@ public class CtrlCuentas {
 	}
 	
 	public void calcularSaldo(Cuenta cuenta) {
-		try {
-			LocalDate hoy = LocalDate.now();
-			boolean esDiaDeMes = cuenta.getFechaApertura().getDayOfMonth() == hoy.getDayOfMonth();
-			boolean esDiaDeAnio = esDiaDeMes && cuenta.getFechaApertura().getMonthValue() == hoy.getMonthValue();
+		LocalDate hoy = LocalDate.now();
+		boolean esDiaDeMes = cuenta.getFechaApertura().getDayOfMonth() == hoy.getDayOfMonth();
+		boolean esDiaDeAnio = esDiaDeMes && cuenta.getFechaApertura().getMonthValue() == hoy.getMonthValue();
 
-			if (esDiaDeAnio) {
-				// Incrementar saldo por interés anual
-				double interesAnual = 0.05; // Ejemplo: 5% de interés
-				double nuevoSaldo = cuenta.getSaldo() * (1 + interesAnual);
-				cuenta.setSaldo(nuevoSaldo);
-				JOptionPane.showMessageDialog(null, "Saldo actualizado con interés anual: " + String.format("%.2f", nuevoSaldo));
-			} else if (esDiaDeMes) {
-				// Decrementar saldo por comisión mensual
-				double comisionMensual = 10.0; // Ejemplo: comisión de 10€
-				double nuevoSaldo = cuenta.getSaldo() - comisionMensual;
-				cuenta.setSaldo(nuevoSaldo); 
-				JOptionPane.showMessageDialog(null, "Saldo actualizado con comisión mensual: " + 	String.format("%.2f", nuevoSaldo));
-			} else {
-				JOptionPane.showMessageDialog(null, "No se cumple el periodo de cálculo.");
-			}
-		} catch (ESaldoNoValido ex) {
-			JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage(), "Saldo Inválido",
-					JOptionPane.ERROR_MESSAGE);
-
+		if (esDiaDeAnio) {
+			// Incrementar saldo por interés anual
+			double interesAnual = 0.05; // Ejemplo: 5% de interés
+			double nuevoSaldo = cuenta.getSaldo() * (1 + interesAnual);
+			cuenta.setSaldo(nuevoSaldo);
+			JOptionPane.showMessageDialog(null, "Saldo actualizado con interés anual: " + String.format("%.2f", nuevoSaldo));
+		} else if (esDiaDeMes) {
+			// Decrementar saldo por comisión mensual
+			double comisionMensual = 10.0; // Ejemplo: comisión de 10€
+			double nuevoSaldo = cuenta.getSaldo() - comisionMensual;
+			cuenta.setSaldo(nuevoSaldo); 
+			JOptionPane.showMessageDialog(null, "Saldo actualizado con comisión mensual: " + 	String.format("%.2f", nuevoSaldo));
+		} else {
+			JOptionPane.showMessageDialog(null, "No se cumple el periodo de cálculo.");
 		}
 	}
 }

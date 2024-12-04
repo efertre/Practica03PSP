@@ -31,8 +31,11 @@ public class PanInsertarCuentaCorriente<E> extends JPanel {
 	private JButton btnInsertar;
 
 	private Lista<E> lista; // Lista personalizada
+	private CtrlCuentas ctrl ;
+	
 
 	public PanInsertarCuentaCorriente(Lista<E> lista) {
+		ctrl = new CtrlCuentas("prueba.dat");
 		this.lista = lista;
 		setLayout(null);
 		addComponents();
@@ -160,7 +163,7 @@ public class PanInsertarCuentaCorriente<E> extends JPanel {
 					lista.insertarNodo((E) nuevaCuenta);
 
 					// Guardar la lista de cuentas en el archivo
-					CtrlCuentas ctrl = new CtrlCuentas("prueba.dat");
+					
 					ctrl.guardarEnFichero((Lista<Cuenta>) lista);
 
 					// Mostrar mensaje de éxito

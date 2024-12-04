@@ -156,7 +156,7 @@ public class FrmPrincipal extends JFrame {
 		mntmCargar10K.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				cuentas = ctrl.generarCuentasAleatorias(cuentas, 850);
+				cuentas = ctrl.generarCuentasAleatorias(cuentas, 10000);
 
 				((PanVerUnoxUno) panVerUnoxUno).actualizarLista(cuentas);
 
